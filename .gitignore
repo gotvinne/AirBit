@@ -1,0 +1,8 @@
+src/MICROBIT.hex
+mnt
+.DS_Store
+MICROBIT.hex
+
+# Ignore sdk as it can be easily installed using microinstall
+microbit-v2-sdk
+

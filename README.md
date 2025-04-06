@@ -1,1 +1,35 @@
-# Air-bit
+
+## AirBit Drone project
+
+Based on micro-tools: https://github.com/c272/micro-tools 
+
+### Setup
+```console
+./microinstall.sh
+. aliases.sh
+microinit src
+microbuild BUILD_DIRECTORY=./src
+```
+
+or you can edit aliases.sh, such that you can use the microbuild command directly: 
+
+```console
+alias microbuild="/Users/geirolatvinnereim/AirBit/microbuild.sh BUILD_DIRECTORY=./src"
+```
+
+### Usage
+
+- microinstall: fetching the lastest microbit v2 sdk into repository and building the source
+
+- microbuild: Building the repository you call the command from into the sdk. Copying source files into sdk
+
+- microflash: Making mnt folder with flashed output. NB! microbit must be connected.
+
+- setup:
+  
+Feed in filepath to microbit-v2-sdk: /Users/geirolatvinnereim/AirBit/microbit-v2-sdk
+
+
+### Troubleshooting
+
+If nrf_sdh_soc_init() cannot be found. You have called build from a wrong folder. Chech microbit-v2-sdk/source and assure that only the src/.cpp files are present.

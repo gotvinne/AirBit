@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "micro:bit PyOCD Cortex Debug",
+            "cwd": "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk",
+            "executable": "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk/build/MICROBIT",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "pyocd",
+            "interface": "swd",
+            "device": "nrf52",
+            "targetId": "nrf52",
+            "svdFile": "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk/libraries/codal-nrf52/nrfx/mdk/nrf52833.svd",
+            "preLaunchCommands": [
+              "load /Users/geirolatvinnereim/AirBit/microbit-v2-sdk/build/MICROBIT",
+              "enable breakpoint",
+              "monitor reset"
+            ]
+        },
+  
+        {
+            "name": "micro:bit OpenOCD Cortex Debug",
+            "cwd": "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk",
+            "executable": "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk/build/MICROBIT",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "configFiles": [
+              "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk/interface/cmsis-dap.cfg",
+              "/Users/geirolatvinnereim/AirBit/microbit-v2-sdk/target/nrf52.cfg"
+            ],
+            "interface": "swd",
+            "preLaunchCommands": [
+              "load /Users/geirolatvinnereim/AirBit/microbit-v2-sdk/build/MICROBIT",
+              "enable breakpoint",
+              "monitor reset"
+            ]
+        }
+    ]
+  }
