@@ -2,7 +2,7 @@
 #include "handController.h"
 
 // Button variables:
-int throttle = 30;
+int throttle = 0;
 const int THROTTLE_THRESHOLD = 40;
 
 static void onButtonA(MicroBitEvent)
