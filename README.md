@@ -1,7 +1,17 @@
 
 ## AirBit Drone project
 
-Based on micro-tools: https://github.com/c272/micro-tools 
+C/C++ code based on micro-tools framework: https://github.com/c272/micro-tools 
+
+### Domains
+
+- Hand controller: Defining control inputs and visualize on display
+- AirBit Drone: Detect and fly based on input
+
+![img/party.png](img/party.png)
+
+PARTY: Pitch, arm, roll, throttle, yaw
+
 
 ### Setup
 ```console
