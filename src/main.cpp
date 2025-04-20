@@ -9,10 +9,10 @@ int main()
 
     setBtnsHandlers();
 
-    uBit.display.print(throttle);
     while(1)
+    {
+        setOrientation();
         uBit.sleep(1000);
-
+    }
     return 0;
 }
-
