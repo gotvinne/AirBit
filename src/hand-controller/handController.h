@@ -10,6 +10,8 @@ extern MicroBit uBit; // Target the same uBit as in main.cpp
 
 // Hand controller variables
 extern int throttle; 
+extern int pitch;
+extern int roll;
 #else
 extern MicroBit& uBit;
 #endif
