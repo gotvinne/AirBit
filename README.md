@@ -2,6 +2,7 @@
 ## AirBit Drone project
 
 C/C++ code based on micro-tools framework: https://github.com/c272/micro-tools 
+Documentation: https://microbit.c272.org
 
 ### Domains
 
@@ -43,3 +44,11 @@ Feed in filepath to microbit-v2-sdk: /Users/geirolatvinnereim/AirBit/microbit-v2
 ### Troubleshooting
 
 If nrf_sdh_soc_init() cannot be found. You have called build from a wrong folder. Chech microbit-v2-sdk/source and assure that only the src/.cpp files are present.
+
+### Debugging
+
+In order allow debugging, the project needs to be built by navigating into the microbit-v2-sdk and access debugger inside Visual Studio Code.
+
+```console
+python3 build.py
+```
