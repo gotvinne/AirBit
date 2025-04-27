@@ -12,7 +12,8 @@ int main()
     while(1)
     {
         setOrientation();
-        uBit.sleep(1000);
+        updateDisplay();
+        uBit.sleep(100);
     }
     return 0;
 }
