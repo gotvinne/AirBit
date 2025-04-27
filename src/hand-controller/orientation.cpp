@@ -25,6 +25,6 @@ void setOrientation() {
     int measuredRoll = uBit.accelerometer.getRoll();
     roll = checkTreshold(measuredRoll, ROLL_THRESHOLD);
     
-    uBit.display.scroll(pitch);
+    //uBit.display.scroll(pitch);
     //uBit.display.scroll(roll);
 }

@@ -8,14 +8,16 @@
 #ifdef MICROBIT_UBIT_AS_STATIC_OBJECT
 extern MicroBit uBit; // Target the same uBit as in main.cpp
 
-// Hand controller variables
-extern int throttle; 
+// Hand controller variables, PARTY
 extern int pitch;
+extern bool armed;
 extern int roll;
+extern int throttle; 
 #else
 extern MicroBit& uBit;
 #endif
 
 void setBtnsHandlers();
+void setOrientation();
 
 #endif
