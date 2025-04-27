@@ -6,6 +6,7 @@ int throttle = 0;
 bool armed = false;
 
 const int THROTTLE_THRESHOLD = 40;
+const int THROTTLE_MIN = 0;
 
 static void onButtonA(MicroBitEvent)
 {
@@ -14,19 +15,22 @@ static void onButtonA(MicroBitEvent)
     } else {
         throttle += 5;
     }
-    uBit.display.print(throttle);
+    //uBit.display.print(throttle);
 }
 
 static void onButtonB(MicroBitEvent)
 {
+    if (throttle <= THROTTLE_MIN) {
+        return;
+    }
     throttle -= 5;
-    uBit.display.print(throttle);
+    //uBit.display.print(throttle);
 }
 
 static void onButtonAB(MicroBitEvent)
 {
     armed = !armed;
-    uBit.display.print(armed ? "1" : "0");
+    //uBit.display.print(armed ? "1" : "0");
 }
 
 void setBtnsHandlers() {
