@@ -1,13 +1,28 @@
 # Hand Controller Logic
 
-### Buttons - Throttle Control (buttons.cpp)
+### Control variables
 
-Implementation: 
-- There is an extern variable throttle which is shared among cpp modules (the purpose of extern)
-- This variable is incremented / decremented by 5 based on the button callbacks. If the variable exeeds 40, it increments 1.
+The following table describes the different control variables and their operating range
+
+all these variables are defined in the header file, and are connected to the **extern keyword** allowing them to be shared among other cpp modules.
+
 ```
+extern int pitch;
+extern bool armed;
+extern int roll;
 extern int throttle;
 ``` 
+
+![img/variables.png](../../img/variables.png)
+
+
+### Buttons - Throttle Control, Arm (buttons.cpp)
+
+Implementation / Button clicks: 
+- A+B: Arm / Disarm the controller. The controller starts to track control variables. 
+- A: Throttle is incremented by 5. If the variable exeeds 40, it increments 1.
+- B: Throttle is decremented by 5. Value can not become negative.
+
 
 ### Compass - Pitch / Roll Control (orientations.cpp)
 
@@ -48,3 +63,22 @@ When held upright, facing the user:
 This is illustrated in the picture below:
 
 ![img/orientations.png](../../img/orientations.png)
+
+### Visualisation (display.cpp)
+
+A mapping of the control variables into a 5x5 LED display is implemented:
+- Armed / disarmed can be found in the upper-left corner (0,0)
+- The left-most column is used to visualize throttle.
+- The rest of the matrix is used to describe the pitch / roll relation.
+
+#### Throttle: 
+
+If throttle is 0, do not turn on LED.
+```
+y = floor(4 - (x / 25)); 
+```
+By applying a floor function to the linear scaling, we assure that throttle = 100 is the only value who gets LED panel position 0 (y = 0)
+
+
+![img/display.jpg](../../img/display.jpg)
+
