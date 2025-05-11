@@ -1,4 +1,5 @@
 #include <MicroBit.h>
+#include <cmath>
 #include "handController.h"
 
 // Microit display
@@ -18,15 +19,10 @@ static void displayArmed(Image& ledDisplay) {
 static void displayThrottle(Image& ledDisplay) {
     if (throttle == 0) {
         return;
-    } else if (throttle <= 15) {
-        ledDisplay.setPixelValue(0, 4, LED_ON);
-    } else if (throttle <= 25) {
-        ledDisplay.setPixelValue(0, 3, LED_ON);
-    } else if (throttle <= 35) {
-        ledDisplay.setPixelValue(0, 2, LED_ON);
     } else {
-        ledDisplay.setPixelValue(0, 1, LED_ON); 
-    }
+        int y = floor(4 - (throttle / 25));
+        ledDisplay.setPixelValue(0, y, LED_ON);
+    } 
 }
 
 static void displayPitchRoll(Image& ledDisplay) {
