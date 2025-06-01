@@ -8,11 +8,11 @@ int main() {
 
   setBtnsHandlers();
 
-  while (1) {
+  while (true) {
+    checkPanic();
     setOrientation();
     updateDisplay();
-
-    uBit.sleep(100); // Do not use 100% cpu
+    uBit.sleep(50); // Do not use 100% cpu
   }
   return 0;
 }
