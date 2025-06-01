@@ -74,10 +74,21 @@ A mapping of the control variables into a 5x5 LED display is implemented:
 #### Throttle: 
 
 If throttle is 0, do not turn on LED.
-```
-y = floor(4 - (x / 25)); 
-```
+$$
+y = \left\lfloor 4 - \frac{x}{25} \right\rfloor
+$$
 By applying a floor function to the linear scaling, we assure that throttle = 100 is the only value who gets LED panel position 0 (y = 0)
+
+#### Pitch / Roll: 
+
+Linear mapping is used to map the angles to display coordinate.
+The angles $x \in [-45, 45] \in \mathbb{R}$,
+The display coordinates $y \in [0, 4] \in \mathbb{I}$
+$$
+y = \frac{2}{45}(x + 45)
+$$
+By applying a floor function to the linear scaling, we assure that throttle = 100 is the only value who gets LED panel position 0 (y = 0)
+
 
 
 ![img/display.jpg](../../img/display.jpg)
