@@ -12,9 +12,9 @@ extern MicroBit uBit; // Target the same uBit as in main.cpp
 extern int pitch;
 extern bool armed;
 extern int roll;
-extern int throttle; 
+extern int throttle;
 #else
-extern MicroBit& uBit;
+extern MicroBit &uBit;
 #endif
 
 void setBtnsHandlers();

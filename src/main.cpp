@@ -1,19 +1,18 @@
-#include <MicroBit.h>
 #include "hand-controller/handController.h"
+#include <MicroBit.h>
 
 MicroBit uBit;
 
-int main()
-{
-    uBit.init();
+int main() {
+  uBit.init();
 
-    setBtnsHandlers();
+  setBtnsHandlers();
 
-    while(1)
-    {
-        setOrientation();
-        updateDisplay();
-        uBit.sleep(100);
-    }
-    return 0;
+  while (1) {
+    setOrientation();
+    updateDisplay();
+
+    uBit.sleep(100); // Do not use 100% cpu
+  }
+  return 0;
 }
