@@ -20,5 +20,6 @@ extern MicroBit &uBit;
 void setBtnsHandlers();
 void setOrientation();
 void updateDisplay();
+void checkPanic();
 
 #endif
