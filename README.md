@@ -52,3 +52,14 @@ In order allow debugging, the project needs to be built by navigating into the m
 ```console
 python3 build.py
 ```
+
+### Linter
+
+We want to utilize a dynamic analysis tool, which can linter codebase, not a static one
+
+Using **clang-format** as dynamic cpp-linter. install and usage:
+This command line tool can only linter one file at a time, so we need to apply recursiveness
+```console
+brew install clang-format
+find /Users/geirolatvinnereim/AirBit/src -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
+```
