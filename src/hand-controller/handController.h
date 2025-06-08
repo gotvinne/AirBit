@@ -21,5 +21,7 @@ void setBtnsHandlers();
 void setOrientation();
 void updateDisplay();
 void checkPanic();
+void transmittData();
+void initRadio();
 
 #endif
