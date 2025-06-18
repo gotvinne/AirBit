@@ -1,8 +1,9 @@
 
 ## AirBit Drone project
 
-C/C++ code based on micro-tools framework: https://github.com/c272/micro-tools 
-Documentation: https://microbit.c272.org
+- C/C++ code based on micro-tools framework: https://github.com/c272/micro-tools 
+- Documentation: https://microbit.c272.org
+- Hardware: 2x Microbit v2 micro controllers: [Link to Microbit documentation](microbit-v2/README.md)
 
 ### Domains
 
