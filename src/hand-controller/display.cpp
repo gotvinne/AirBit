@@ -37,7 +37,7 @@ static void displayThrottle(Image &ledDisplay) {
 }
 
 static uint16_t angleToDisplayCoord(int angle) {
-  return static_cast<uint16_t>((angle + 45) / 22.5);
+  return static_cast<uint16_t>(std::round((angle + 45) / 22.5));
 }
 
 static void displayPitchRoll(Image &ledDisplay) {
