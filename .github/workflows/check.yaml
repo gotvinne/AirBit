@@ -29,7 +29,7 @@ jobs:
         run: chmod +x microbuild.sh microinstall.sh microinit.sh
 
       - name: Run microinstall
-        run: sh microinstall.sh
+        run: ./microinstall.sh
 
       - name: Run microinit
         run: sh microinit.sh src
