@@ -29,10 +29,10 @@ jobs:
         run: chmod +x microbuild.sh microinstall.sh microinit.sh
 
       - name: Run microinstall
-        run: microinstall.sh
+        run: sh microinstall.sh
 
       - name: Run microinit
-        run: microinit.sh src
+        run: sh microinit.sh src
 
       - name: Run aliases.sh
-        run: microbuild.sh BUILD_DIRECTORY=./src
+        run: sh microbuild.sh BUILD_DIRECTORY=./src
