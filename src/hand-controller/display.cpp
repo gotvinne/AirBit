@@ -46,6 +46,11 @@ static void displayPitchRoll(Image &ledDisplay) {
   ledDisplay.setPixelValue(x, y, LED_ON);
 }
 
+static void displayYaw(Image &ledDisplay) {
+  uint16_t x = static_cast<uint16_t>(yaw / 30 + 2);
+  ledDisplay.setPixelValue(x, 0, LED_ON);
+}
+
 void updateDisplay() {
   uBit.display.clear();
 
@@ -53,5 +58,6 @@ void updateDisplay() {
   displayArmed(ledDisplay);
   displayThrottle(ledDisplay);
   displayPitchRoll(ledDisplay);
+  displayYaw(ledDisplay);
   uBit.display.print(ledDisplay);
 }
