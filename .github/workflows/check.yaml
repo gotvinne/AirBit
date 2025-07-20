@@ -31,6 +31,9 @@ jobs:
       - name: Run microinstall
         run: ./microinstall.sh
 
+      - name: Add micro-tools to path
+        run: source /home/runner/work/AirBit/AirBit/aliases.sh
+
       - name: Run microinit
         run: ./microinit.sh src
 
