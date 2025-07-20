@@ -17,3 +17,22 @@ jobs:
       - name: Check formatting in /src
         run: |
           find ./src \( -iname '*.h' -o -iname '*.cpp' \) -print0 | xargs -0 clang-format --dry-run --Werror
+
+  micro-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x microbuild.sh microinstall.sh microinit.sh
+
+      - name: Run microinstall
+        run: ./microinstall.sh
+
+      - name: Run microinit
+        run: ./microinit.sh src
+
+      - name: microbuild
+        run: ./microbuild.sh BUILD_DIRECTORY=./src
