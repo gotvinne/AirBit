@@ -8,9 +8,11 @@ int main() {
 
   initRadio();
   setBtnsHandlers();
+  setP1High();
 
   while (true) {
     checkPanic();
+    readPins();
     setOrientation();
     updateDisplay();
     transmittData();

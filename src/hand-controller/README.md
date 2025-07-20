@@ -11,6 +11,7 @@ extern int pitch;
 extern bool armed;
 extern int roll;
 extern int throttle;
+extern int yaw;
 ``` 
 
 ![img/variables.png](../../img/variables.png)
@@ -82,13 +83,21 @@ By applying a floor function to the linear scaling, we assure that throttle = 10
 #### Pitch / Roll: 
 
 Linear mapping is used to map the angles to display coordinate.
-The angles $x \in [-45, 45] \in \mathbb{R}$,
-The display coordinates $y \in [0, 4] \in \mathbb{I}$
+The angles, $x \in [-45, 45] \in \mathbb{R}$,
+The display coordinates, $y \in [0, 4] \in \mathbb{I}$
 $$
 y = \frac{2}{45}(x + 45)
 $$
 By applying a floor function to the linear scaling, we assure that throttle = 100 is the only value who gets LED panel position 0 (y = 0)
 
+#### Yaw: 
+
+Linear mapping is used to map the angle to display coordinate.
+The yaw value, $x \in {-30, 0, 30}$,
+The display coordinates, $y \in [1, 3] \in \mathbb{I}$
+$$
+y = \frac{x}{30} + 2
+$$
 
 
 ![img/display.jpg](../../img/display.jpg)
