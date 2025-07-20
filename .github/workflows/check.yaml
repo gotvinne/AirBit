@@ -32,7 +32,7 @@ jobs:
         run: ./microinstall.sh
 
       - name: Run microinit
-        run: sh microinit.sh src
+        run: ./microinit.sh src
 
-      - name: Run aliases.sh
-        run: sh microbuild.sh BUILD_DIRECTORY=./src
+      - name: microbuild
+        run: ./microbuild.sh BUILD_DIRECTORY=./src
