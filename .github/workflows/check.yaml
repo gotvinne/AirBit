@@ -1,0 +1,19 @@
+name: PR Check
+
+on:
+  pull_request:
+
+jobs:
+  clang-formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Check formatting in /src
+        run: |
+          find ./src \( -iname '*.h' -o -iname '*.cpp' \) -print0 | xargs -0 clang-format --dry-run --Werror
