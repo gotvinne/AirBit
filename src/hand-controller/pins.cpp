@@ -14,23 +14,23 @@ const int P2_LOW_ANALOG_THRESHOLD = 400;
 const int MAX_PWM_VALUE = 1023;
 
 static int setYawFromP0Read(int meas) {
-    if (meas >= P0_HIGH_ANALOG_THRESHOLD) {
-        return -30;
-    } else if (meas <= P0_LOW_ANALOG_THRESHOLD) {
-        return 0;
-    } else { // If measurement is within range
-        return yaw;
-    }
+  if (meas >= P0_HIGH_ANALOG_THRESHOLD) {
+    return -30;
+  } else if (meas <= P0_LOW_ANALOG_THRESHOLD) {
+    return 0;
+  } else { // If measurement is within range
+    return yaw;
+  }
 }
 
 static int setYawFromP2Read(int meas) {
-    if (meas >= P2_HIGH_ANALOG_THRESHOLD) {
-        return 30;
-    } else if (meas <= P2_LOW_ANALOG_THRESHOLD) {
-        return 0;
-    } else {
-        return yaw;
-    }
+  if (meas >= P2_HIGH_ANALOG_THRESHOLD) {
+    return 30;
+  } else if (meas <= P2_LOW_ANALOG_THRESHOLD) {
+    return 0;
+  } else {
+    return yaw;
+  }
 }
 
 void setP1High() {
@@ -46,11 +46,12 @@ void readPins() {
   int p2 = uBit.io.P2.getAnalogValue();
 
   // Since the yaw can either be determined of P0 or P2
-  // We let the highest measured value determine yaw if it exeeds HIGH_ANALOG_THRESHOLD
-  // Reset yaw if the highest measured value is lower than LOW_ANALOG_THRESHOLD
+  // We let the highest measured value determine yaw if it exeeds
+  // HIGH_ANALOG_THRESHOLD Reset yaw if the highest measured value is lower than
+  // LOW_ANALOG_THRESHOLD
   if (p0 > p2) {
     yaw = setYawFromP0Read(p0);
   } else if (p2 > p0) {
     yaw = setYawFromP2Read(p2);
-  } 
+  }
 }
