@@ -64,4 +64,5 @@ void transmittData() {
   sendValue('A', armed);
   sendValue('R', roll);
   sendValue('T', throttle);
+  sendValue('Y', yaw);
 }
