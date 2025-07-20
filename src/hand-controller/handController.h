@@ -13,15 +13,21 @@ extern int pitch;
 extern bool armed;
 extern int roll;
 extern int throttle;
+extern int yaw;
 #else
 extern MicroBit &uBit;
 #endif
 
+// Setup peripherals:
 void setBtnsHandlers();
+void initRadio();
+void setP1High();
+
+// Monitoring:
 void setOrientation();
 void updateDisplay();
 void checkPanic();
 void transmittData();
-void initRadio();
+void readPins();
 
 #endif
