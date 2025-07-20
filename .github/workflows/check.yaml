@@ -26,7 +26,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Make scripts executable
-        run: chmod +x microbuild.sh
+        run: chmod +x microbuild.sh microinstall.sh microinit.sh
+
+      - name: Run microinstall
+        run: microinstall.sh
+
+      - name: Run microinit
+        run: microinit.sh src
 
       - name: Run aliases.sh
         run: microbuild.sh BUILD_DIRECTORY=./src
