@@ -16,11 +16,31 @@ PARTY: Pitch, arm, roll, throttle, yaw
 
 
 ### Setup
+There are some dependancies needed: 
+- GCC
+- Python 3
+- CMake
+- GCC ARM EABI
+- GCC ARM binutils
+- GCC ARM newlib
+- GCC ARM libstdc++
+
+This can be done via brew: 
+```console
+brew install cmake python3
+brew install --cask gcc-arm-embedded
+```
+
+
 ```console
 ./microinstall.sh
+
+// ADD micro-tools to PATH: 
+echo 'source /Users/geirolatvinnereim/AirBit/aliases.sh' >> ~/.bashrc
+source ~/.bashrc
+
 . aliases.sh
-microinit src
-microbuild BUILD_DIRECTORY=./src
+./microbuild.sh BUILD_DIRECTORY=./src
 ```
 
 or you can edit aliases.sh, such that you can use the microbuild command directly: 
