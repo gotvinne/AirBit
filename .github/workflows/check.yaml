@@ -25,17 +25,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Make scripts executable
-        run: chmod +x microbuild.sh microinstall.sh microinit.sh
+      - name: install build dependancies
+        run: sudo apt install gcc python3 cmake gcc-arm-none-eabi binutils-arm-none-eabi
 
-      - name: Run microinstall
-        run: ./microinstall.sh
+      - name: microinstall
+        run: |
+          chmod +x microinstall.sh
+          ./microinstall.sh
 
       - name: Add micro-tools to path
-        run: source /home/runner/work/AirBit/AirBit/aliases.sh
-
-      - name: Run microinit
-        run: ./microinit.sh src
+        run: |
+          source ./aliases.sh
+          chmod +x ./aliases.sh
+          ./aliases.sh
 
       - name: microbuild
-        run: ./microbuild.sh BUILD_DIRECTORY=./src
+        run: |
+          cd microbit-v2-sdk
+          python3 build.py
