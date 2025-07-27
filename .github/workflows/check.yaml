@@ -17,3 +17,33 @@ jobs:
       - name: Check formatting in /src
         run: |
           find ./src \( -iname '*.h' -o -iname '*.cpp' \) -print0 | xargs -0 clang-format --dry-run --Werror
+
+  micro-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: install build dependancies
+        run: sudo apt install gcc python3 cmake gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: microinstall
+        run: |
+          chmod +x microinstall.sh
+          ./microinstall.sh
+
+      - name: Add micro-tools to path
+        run: |
+          source ./aliases.sh
+          chmod +x ./aliases.sh
+          ./aliases.sh
+
+      - name: Copy src foldet to sdk
+        run: |
+          rsync -a --delete ./src/ ./microbit-v2-sdk/source/
+
+      - name: microbuild python
+        run: |
+          cd microbit-v2-sdk
+          python3 build.py
