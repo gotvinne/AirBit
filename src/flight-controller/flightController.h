@@ -9,14 +9,15 @@
 extern MicroBit uBit; // Target the same uBit as in main.cpp
 
 extern int altitude;
+extern int batteryMilliVolt;
 #else
 extern MicroBit &uBit;
 #endif
 
-// Setup peripherals:
-void initUltrasonicSensor();
+void MeasureAltitudeLoop();
 
-// Monitoring:
-void startMeasurement();
+void BatteryInfo();
+
+void UpdateDisplay();
 
 #endif
