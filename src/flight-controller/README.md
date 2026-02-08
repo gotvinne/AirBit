@@ -19,3 +19,11 @@ The microbit PCB is equiped with a barometer which can be used to calculate the 
 $$ distance(cm) = \frac{pulse (\mu s)}{58}$$ 
 
 ![Timing diagram](../../img/ultrasonic-timing.png)
+
+### Battery logic
+
+With the provided setup, the analog pin P0 is used to monitor charging and battery level. The battery millivoltage range from [3400, 4200] mV, describing respectively an empty 🪫 and full battery level 🔋. Based on this range, we define 5 different battery levels in the logic. The drone needs charging if battery level equals BatteryLevel::EMPTY or BatteryLevel::LOW. 
+
+Reading from the Pin P0 is a noisy measurement so a logical lowpass filter is implemented
+
+An charge plug icon is displayed when the battery needs charging, during the charging a battery icon is displayed.
