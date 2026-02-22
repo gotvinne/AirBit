@@ -26,15 +26,25 @@ static void onDisableTRIG(Event) {
   altitude = calculateCmFromPulse();
 }
 
-void initUltrasonicSensor() {
+static void initUltrasonicSensor() {
   // 60 ms measurement cycle
   // Using codal Event model to track the TRIG signal.
   EventModel::defaultEventBus->listen(TRIG_EVENT_ID, TRIG_EVENT_VALUE,
                                       onDisableTRIG);
 }
 
-void startMeasurement() {
+static void startMeasurement() {
   // Apply TRIG pulse for TRIG_HIGH_TIME_US milliseconds.
   TRIG.setDigitalValue(1);
   uBit.timer.eventAfterUs(TRIG_HIGH_TIME_US, TRIG_EVENT_ID, TRIG_EVENT_VALUE);
+}
+
+void MeasureAltitudeLoop() {
+  initUltrasonicSensor();
+
+  while (true) { // measure one per second
+    startMeasurement();
+    uBit.display.scroll(altitude);
+    uBit.sleep(1000);
+  }
 }
