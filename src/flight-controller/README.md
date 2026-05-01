@@ -27,3 +27,13 @@ With the provided setup, the analog pin P0 is used to monitor charging and batte
 Reading from the Pin P0 is a noisy measurement so a logical lowpass filter is implemented
 
 An charge plug icon is displayed when the battery needs charging, during the charging a battery icon is displayed.
+
+### Servo Motor & IMU (WonderKit Black board)
+
+In order to apply actuation to the system, the MicroBit v2 is connected to a ServoMotor via its pins. The I2C Protocol (Inter-Integrated Circuit) is implemented as communication layer between the two modules using P2 (SDA) and P1 (SCL). Based on this serial-connection the Microbit can read and write actuation to the propellers. By writing to the Servo Motor registers, the servo motor will apply a PWM signal to the properllers. 
+
+The I2C functionality availiable in the sdk can be found [here](../../microbit-v2-sdk/libraries/codal-nrf52/source/NRF52I2C.cpp)
+
+![I2C setup](../../img/i2c.png)
+
+![Motor setup](../../img/motor_registers.png)
