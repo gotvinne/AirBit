@@ -7,6 +7,8 @@ int main() {
   uBit.init();
 
   InitBatteryInfo();
+  InitServoController();
+  SetAllPropellerActuation(0, 0, 0, 0);
   while (true) {
     SetBatteryInfo();
     UpdateDisplay();
