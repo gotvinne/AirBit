@@ -1,10 +1,11 @@
-name: PR Check
+name: ci
 
 on:
   pull_request:
+    branches: [main]
 
 jobs:
-  clang-formatting:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +19,7 @@ jobs:
         run: |
           find ./src \( -iname '*.h' -o -iname '*.cpp' \) -print0 | xargs -0 clang-format --dry-run --Werror
 
-  micro-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
