@@ -1,8 +1,6 @@
 #include "handController.h"
 #include <MicroBit.h>
 
-int RADIO_GROUP = 7;
-
 /*
 // Packet Spec:
 // | 0              | 1 ... 4       | 5 ... 8           | 9 ... 28
@@ -52,11 +50,6 @@ static void sendValue(char name, int value) {
 
   // Send the packet
   uBit.radio.datagram.send(buf, i);
-}
-
-void initRadio() {
-  uBit.radio.enable();
-  uBit.radio.setGroup(RADIO_GROUP);
 }
 
 void transmittData() {
