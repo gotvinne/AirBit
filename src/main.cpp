@@ -13,14 +13,19 @@ static void initRadio() {
 }
 
 static void FlightController() {
-  state = State::CALIBRATING;
+  SetState(State::CALIBRATING);
   InitBatteryInfo();
   InitServoController();
-  state = State::DISARMED;
+  if (GetFlightState().state == State::PANIC) {
+    uBit.sleep(10000);
+    return;
+  } else {
+    SetState(State::DISARMED);
+  }
 
   while (true) {
     SetBatteryInfo();
-    UpdateDisplay();
+    UpdateView();
     uBit.sleep(1000);
   }
 }

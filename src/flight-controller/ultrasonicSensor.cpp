@@ -1,3 +1,4 @@
+#include "ultrasonicSensor.h"
 #include "EventModel.h"
 #include "Timer.h"
 #include "flightController.h"

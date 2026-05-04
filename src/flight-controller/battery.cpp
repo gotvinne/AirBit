@@ -1,7 +1,5 @@
+#include "battery.h"
 #include "flightController.h"
-#include <MicroBit.h>
-#include <algorithm>
-#include <cmath>
 
 const double BATTERY_FACTOR = 5.94; // conversion from ADC reading to mV
 const int UPPER_BATTERY_MV = 4200;
@@ -10,12 +8,17 @@ const double ALPHA = 0.7; // Smoothing factor [0,1]
 const int CHARGING_THRESHOLD = 750;
 
 int batteryMilliVolt = 3800;
-BatteryLevel batteryLevel = BatteryLevel::MEDIUMLOW;
-bool isCharging = false;
+static BatteryState batteryState{
+  batteryLevel : BatteryLevel::MEDIUMLOW,
+  isCharging : false,
+};
 
 static int readBatteryMilliVolt() {
   int p0 = uBit.io.P0.getAnalogValue();
-  isCharging = p0 >= CHARGING_THRESHOLD;
+  batteryState.isCharging = p0 >= CHARGING_THRESHOLD;
+  if (batteryState.isCharging) {
+    SetState(State::CHARGING);
+  }
   return p0 * BATTERY_FACTOR;
 }
 
@@ -32,10 +35,12 @@ static BatteryLevel milliVoltToBatteryLevel(int batteryMilliVolt) {
   return static_cast<BatteryLevel>(level);
 }
 
+const BatteryState &GetBatteryState() { return batteryState; }
+
 void SetBatteryInfo() {
   double meas = readBatteryMilliVolt();
   batteryMilliVolt = smoothMeasurement(meas);
-  batteryLevel = milliVoltToBatteryLevel(batteryMilliVolt);
+  batteryState.batteryLevel = milliVoltToBatteryLevel(batteryMilliVolt);
   // uBit.display.scroll(static_cast<uint16_t>(batteryLevel));
 }
 
@@ -46,7 +51,7 @@ void InitBatteryInfo() {
   for (int i = 0; i < 5; i++) {
     double meas = readBatteryMilliVolt();
     batteryMilliVolt = smoothMeasurement(meas);
-    batteryLevel = milliVoltToBatteryLevel(batteryMilliVolt);
+    batteryState.batteryLevel = milliVoltToBatteryLevel(batteryMilliVolt);
     // uBit.display.scroll(static_cast<uint16_t>(batteryLevel));
     // uBit.sleep(100);
   }
