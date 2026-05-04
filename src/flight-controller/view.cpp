@@ -1,3 +1,4 @@
+#include "view.h"
 #include "flightController.h"
 #include <MicroBit.h>
 #include <cmath>
@@ -16,20 +17,21 @@ static void addChargingColumn(int column, Image &ledDisplay) {
   if (column < 0 || column >= LED_DISPLAY_SIZE) {
     return;
   }
-  int y = static_cast<int>(batteryLevel);
+  int y = static_cast<int>(GetBatteryState().batteryLevel);
   for (int i = 4; i >= y; i--) {
     ledDisplay.setPixelValue(column, i, LED_ON);
   }
 }
 
-static void displayBatteryLevel(Image &ledDisplay) {
-  if (isCharging) {
+static void viewBatteryLevel(Image &ledDisplay) {
+  const BatteryState &batteryState = GetBatteryState();
+  if (batteryState.isCharging) {
     ledDisplay = ICON_BATTERY_CHARGING;
     return;
   }
 
-  if (batteryLevel == BatteryLevel::EMPTY ||
-      batteryLevel == BatteryLevel::LOW) {
+  if (batteryState.batteryLevel == BatteryLevel::EMPTY ||
+      batteryState.batteryLevel == BatteryLevel::LOW) {
     ledDisplay = ICON_BATTERY_NEEDS_CHARGING;
     return;
   }
@@ -37,10 +39,10 @@ static void displayBatteryLevel(Image &ledDisplay) {
   addChargingColumn(4, ledDisplay);
 }
 
-void UpdateDisplay() {
+void UpdateView() {
   uBit.display.clear();
 
   Image ledDisplay = Image(LED_DISPLAY_SIZE, LED_DISPLAY_SIZE);
-  displayBatteryLevel(ledDisplay);
+  viewBatteryLevel(ledDisplay);
   uBit.display.print(ledDisplay);
 }

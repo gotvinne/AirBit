@@ -20,7 +20,6 @@ extern MicroBit &uBit;
 
 // Setup peripherals:
 void setBtnsHandlers();
-void initRadio();
 void setP1High();
 
 // Monitoring:
