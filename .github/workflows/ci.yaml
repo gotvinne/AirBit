@@ -34,7 +34,7 @@ jobs:
           source ./aliases.sh
           chmod +x ./aliases.sh
           ./aliases.sh
-      - name: Copy src foldet to sdk
+      - name: Copy src folder to sdk
         run: |
           rsync -a --delete ./src/ ./microbit-v2-sdk/source/
       - name: microbuild python
