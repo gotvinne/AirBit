@@ -1,0 +1,33 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: sudo apt install -y gcc python3 cmake gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: Run microinstall
+        run: |
+          chmod +x microinstall.sh
+          ./microinstall.sh
+
+      - name: Run microbuild
+        run: |
+          chmod +x microbuild.sh
+          ./microbuild.sh
+
+      - name: Upload MICROBIT.hex artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MICROBIT-hex-${{ github.ref_name }}
+          path: MICROBIT.hex
