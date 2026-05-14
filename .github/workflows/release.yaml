@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  micro-build-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,9 +32,12 @@ jobs:
         run: |
           cd microbit-v2-sdk
           python3 build.py
+        
+      - name: Find generated hex files
+        run: find . -name "*.hex" -type f
 
       - name: Upload MICROBIT.hex artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MICROBIT-hex-${{ github.ref_name }}
-          path: MICROBIT.hex
+          name: MICROBIT-${{ github.ref_name }}
+          path: microbit-v2-sdk/MICROBIT.hex
