@@ -2,9 +2,6 @@ name: ci
 
 on:
   pull_request:
-    branches: [main]
-    paths:
-      - 'src/**'
 
 jobs:
   lint:
@@ -19,7 +16,23 @@ jobs:
         run: |
           find ./src \( -iname '*.h' -o -iname '*.cpp' \) -print0 | xargs -0 clang-format --dry-run --Werror
 
-  build:
+  check-src-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src_changed: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
+  micro-build:
+    needs: check-src-changes
+    if: needs.check-src-changes.outputs.src_changed == 'true'
     runs-on: ubuntu-latest
 
     steps:
