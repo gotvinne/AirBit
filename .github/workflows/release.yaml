@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  micro-build-release:
+  micro-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,3 +41,19 @@ jobs:
         with:
           name: MICROBIT-${{ github.ref_name }}
           path: microbit-v2-sdk/MICROBIT.hex
+
+  release:
+    needs: micro-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: MICROBIT-${{ github.ref_name }}
+          path: artifacts
+
+      - name: Publish release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/MICROBIT-${{ github.ref_name }}
