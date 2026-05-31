@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   micro-build:
     runs-on: ubuntu-latest
@@ -56,4 +59,4 @@ jobs:
       - name: Publish release asset
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/MICROBIT-${{ github.ref_name }}
+          files: artifacts/MICROBIT-${{ github.ref_name }}/*.hex
