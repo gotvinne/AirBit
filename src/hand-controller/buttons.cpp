@@ -1,9 +1,10 @@
+#include "buttons.h"
 #include "handController.h"
 #include <MicroBit.h>
 
 // Button variables:
-int throttle = 0;
-bool armed = false;
+static int throttle = 0;
+static bool armed = false;
 
 const int THROTTLE_THRESHOLD = 40;
 const int THROTTLE_MIN = 5;
@@ -31,7 +32,7 @@ static void onButtonAB(MicroBitEvent) {
   // uBit.display.print(armed ? "1" : "0");
 }
 
-void setBtnsHandlers() {
+void SetBtnsHandlers() {
   uBit.messageBus.listen(DEVICE_ID_BUTTON_A, DEVICE_BUTTON_EVT_CLICK,
                          onButtonA);
   uBit.messageBus.listen(DEVICE_ID_BUTTON_B, DEVICE_BUTTON_EVT_CLICK,
@@ -40,7 +41,11 @@ void setBtnsHandlers() {
                          onButtonAB);
 }
 
-void checkPanic() {
+int GetThrottle() { return throttle; }
+
+bool IsArmed() { return armed; }
+
+void CheckPanic() {
   if (uBit.accelerometer.getGesture() == ACCELEROMETER_EVT_SHAKE) {
     armed = false;
     throttle = 0;
