@@ -59,4 +59,4 @@ jobs:
       - name: Publish release asset
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/MICROBIT-${{ github.ref_name }}/*.hex
+          files: artifacts/MICROBIT-${{ github.ref_name }}/MICROBIT.hex
