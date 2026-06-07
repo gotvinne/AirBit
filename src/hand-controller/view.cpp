@@ -1,6 +1,9 @@
+#include "view.h"
+#include "buttons.h"
 #include "handController.h"
+#include "orientation.h"
+#include "pins.h"
 #include <MicroBit.h>
-#include <cmath>
 
 // MicroBit display
 const uint16_t LED_DISPLAY_SIZE = 5;
@@ -19,7 +22,7 @@ static void updatePulse() {
 }
 
 static void displayArmed(Image &ledDisplay) {
-  if (armed) {
+  if (IsArmed()) {
     updatePulse();
     ledDisplay.setPixelValue(0, 0, armedPulse);
   } else {
@@ -28,6 +31,7 @@ static void displayArmed(Image &ledDisplay) {
 }
 
 static void displayThrottle(Image &ledDisplay) {
+  int throttle = GetThrottle();
   if (throttle == 0) {
     return;
   } else {
@@ -41,17 +45,17 @@ static uint16_t angleToDisplayCoord(int angle) {
 }
 
 static void displayPitchRoll(Image &ledDisplay) {
-  uint16_t x = angleToDisplayCoord(roll);
-  uint16_t y = angleToDisplayCoord(pitch);
+  uint16_t x = angleToDisplayCoord(GetRoll());
+  uint16_t y = angleToDisplayCoord(GetPitch());
   ledDisplay.setPixelValue(x, y, LED_ON);
 }
 
 static void displayYaw(Image &ledDisplay) {
-  uint16_t x = static_cast<uint16_t>(yaw / 30 + 2);
+  uint16_t x = static_cast<uint16_t>(GetYaw() / 30 + 2);
   ledDisplay.setPixelValue(x, 0, LED_ON);
 }
 
-void updateDisplay() {
+void UpdateDisplay() {
   uBit.display.clear();
 
   Image ledDisplay = Image(LED_DISPLAY_SIZE, LED_DISPLAY_SIZE);
