@@ -1,4 +1,8 @@
+#include "transmitter.h"
+#include "buttons.h"
 #include "handController.h"
+#include "orientation.h"
+#include "pins.h"
 #include <MicroBit.h>
 
 /*
@@ -52,10 +56,10 @@ static void sendValue(char name, int value) {
   uBit.radio.datagram.send(buf, i);
 }
 
-void transmittData() {
-  sendValue('P', pitch);
-  sendValue('A', armed);
-  sendValue('R', roll);
-  sendValue('T', throttle);
-  sendValue('Y', yaw);
+void TransmittData() {
+  sendValue('P', GetPitch());
+  sendValue('A', IsArmed());
+  sendValue('R', GetRoll());
+  sendValue('T', GetThrottle());
+  sendValue('Y', GetYaw());
 }

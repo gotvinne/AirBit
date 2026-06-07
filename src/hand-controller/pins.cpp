@@ -1,7 +1,8 @@
+#include "pins.h"
 #include "handController.h"
 #include <MicroBit.h>
 
-int yaw = 0;
+static int yaw = 0;
 
 // ADC has a resolution of 1 Byte
 // There are different thresholds for the two pins, as P0 is more sensible
@@ -33,7 +34,7 @@ static int setYawFromP2Read(int meas) {
   }
 }
 
-void setP1High() {
+void SetP1High() {
   int succ = uBit.io.P1.setAnalogValue(MAX_PWM_VALUE);
   if (succ != DEVICE_OK) {
     uBit.display.scroll("P1");
@@ -41,7 +42,7 @@ void setP1High() {
   }
 }
 
-void readPins() {
+void ReadPins() {
   int p0 = uBit.io.P0.getAnalogValue();
   int p2 = uBit.io.P2.getAnalogValue();
 
@@ -55,3 +56,5 @@ void readPins() {
     yaw = setYawFromP2Read(p2);
   }
 }
+
+int GetYaw() { return yaw; }

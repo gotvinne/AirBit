@@ -31,15 +31,15 @@ static void FlightController() {
 }
 
 static void HandController() {
-  setBtnsHandlers();
-  setP1High();
+  SetBtnsHandlers();
+  SetP1High();
 
   while (true) {
-    setOrientation();
-    updateDisplay();
-    checkPanic();
-    transmittData();
-    readPins();
+    SetOrientation();
+    UpdateDisplay();
+    CheckPanic();
+    TransmittData();
+    ReadPins();
     uBit.sleep(100);
   }
 }
@@ -47,6 +47,6 @@ static void HandController() {
 int main() {
   uBit.init();
   initRadio();
-  FlightController();
+  HandController();
   return 0;
 }

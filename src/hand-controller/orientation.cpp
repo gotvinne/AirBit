@@ -1,10 +1,10 @@
+#include "orientation.h"
 #include "handController.h"
 #include <MicroBit.h>
-#include <algorithm>
 
 // orientation variables:
-int pitch = 0;
-int roll = 0;
+static int pitch = 0;
+static int roll = 0;
 
 const int ANGULAR_THRESHOLD = 45;
 const int STEADY_STATE_THRESHOLD = 15;
@@ -27,7 +27,7 @@ static int clampAngles(int value, int threshold) {
   return clampedValue;
 }
 
-void setOrientation() {
+void SetOrientation() {
   int measuredPitch = uBit.accelerometer.getPitch();
   pitch = clampAngles(measuredPitch, ANGULAR_THRESHOLD);
 
@@ -37,3 +37,7 @@ void setOrientation() {
   // uBit.display.scroll(pitch);
   // uBit.display.scroll(roll);
 }
+
+int GetPitch() { return pitch; }
+
+int GetRoll() { return roll; }
