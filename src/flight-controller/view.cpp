@@ -47,5 +47,8 @@ void UpdateView() {
   Image ledDisplay = Image(LED_DISPLAY_SIZE, LED_DISPLAY_SIZE);
   viewBatteryLevel(ledDisplay);
   DisplayArmed(IsDroneArmed(), ledDisplay);
+  DisplayThrottle(GetDroneThrottle(), ledDisplay);
+  DisplayPitchRoll(GetDroneRoll(), GetDronePitch(), ledDisplay);
+  DisplayYaw(GetDroneYaw(), ledDisplay);
   uBit.display.print(ledDisplay);
 }
