@@ -102,3 +102,20 @@ $$
 
 ![img/display.jpg](../../img/display.jpg)
 
+#### Radio communication
+
+We use a radio channel to send packets between the hand controller and flight controller. These packets contains control variables and setpoints.
+
+Packet Spec per byte:
+| 0              | 1 ... 4       | 5 ... 8           | 9 ... 28
+----------------------------------------------------------------
+| packet type    | system time   | serial number     | payload
+
+- Packet type = 1 is the first byte
+- The following four bytes (int size) is the system time
+- The following four bytes (int size) is the serial number, which is set to 0
+
+The Payload is divided in two: 
+- The first four payload bytes (9, 10, 11, 12) is the integer value sent
+- The following payload byte (13) is the name length
+- The following payload byte (14) is the identifying char ('P', 'A', 'R', 'T' 'Y')
