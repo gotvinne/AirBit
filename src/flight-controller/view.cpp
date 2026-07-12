@@ -1,5 +1,7 @@
 #include "view.h"
+#include "../utilities.h"
 #include "flightController.h"
+#include "receiver.h"
 #include <MicroBit.h>
 #include <cmath>
 
@@ -44,5 +46,6 @@ void UpdateView() {
 
   Image ledDisplay = Image(LED_DISPLAY_SIZE, LED_DISPLAY_SIZE);
   viewBatteryLevel(ledDisplay);
+  DisplayArmed(IsDroneArmed(), ledDisplay);
   uBit.display.print(ledDisplay);
 }
