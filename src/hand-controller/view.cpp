@@ -1,4 +1,5 @@
 #include "view.h"
+#include "../utilities.h"
 #include "buttons.h"
 #include "handController.h"
 #include "orientation.h"
@@ -8,27 +9,6 @@
 // MicroBit display
 const uint16_t LED_DISPLAY_SIZE = 5;
 const int LED_ON = 255;
-int pulseDirection = 15;
-int armedPulse = 0;
-
-static void updatePulse() {
-  armedPulse += pulseDirection;
-
-  if (armedPulse == 255) {
-    pulseDirection = -15;
-  } else if (armedPulse == 0) {
-    pulseDirection = 15;
-  }
-}
-
-static void displayArmed(Image &ledDisplay) {
-  if (IsArmed()) {
-    updatePulse();
-    ledDisplay.setPixelValue(0, 0, armedPulse);
-  } else {
-    armedPulse = 0;
-  }
-}
 
 static void displayThrottle(Image &ledDisplay) {
   int throttle = GetThrottle();
@@ -59,7 +39,7 @@ void UpdateDisplay() {
   uBit.display.clear();
 
   Image ledDisplay = Image(LED_DISPLAY_SIZE, LED_DISPLAY_SIZE);
-  displayArmed(ledDisplay);
+  DisplayArmed(IsArmed(), ledDisplay);
   displayThrottle(ledDisplay);
   displayPitchRoll(ledDisplay);
   displayYaw(ledDisplay);

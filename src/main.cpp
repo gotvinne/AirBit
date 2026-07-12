@@ -25,8 +25,9 @@ static void FlightController() {
 
   while (true) {
     SetBatteryInfo();
+    FlushRadioBuffer();
     UpdateView();
-    uBit.sleep(1000);
+    uBit.sleep(100);
   }
 }
 
@@ -47,6 +48,6 @@ static void HandController() {
 int main() {
   uBit.init();
   initRadio();
-  HandController();
+  FlightController();
   return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "battery.h"
+#include "receiver.h"
 #include "servoController.h"
 #include "ultrasonicSensor.h"
 #include "view.h"
@@ -15,7 +16,7 @@
 
 #define MICROBIT_UBIT_AS_STATIC_OBJECT
 
-enum class State : uint16_t { CALIBRATING, CHARGING, DISARMED, ARMED, PANIC };
+enum class State : uint8_t { CALIBRATING, CHARGING, DISARMED, ARMED, PANIC };
 
 struct FlightState {
   int altitude;

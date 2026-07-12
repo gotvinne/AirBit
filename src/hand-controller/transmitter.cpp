@@ -1,9 +1,12 @@
 #include "transmitter.h"
+#include "../constants.h"
 #include "buttons.h"
 #include "handController.h"
 #include "orientation.h"
 #include "pins.h"
 #include <MicroBit.h>
+
+static RadioPacketChars radioPacketChars = DefaultRadioPacketChars;
 
 /*
 // Packet Spec:
@@ -30,7 +33,7 @@ static void sendValue(char name, int value) {
   uint8_t buf[32];
   int i = 0;
 
-  // Packet type value
+  // Packet type value (first byte)
   buf[i++] = 0x01;
 
   // Timestamp (4 bytes)
@@ -48,8 +51,9 @@ static void sendValue(char name, int value) {
   i += 4;
 
   // Name length
-  buf[i++] = 1;
-  memcpy(&buf[i], &name, 1);
+  buf[i++] = 1; // 13th byte
+  // Name
+  memcpy(&buf[i], &name, 1); // 14th byte
   i += 1;
 
   // Send the packet
@@ -57,9 +61,9 @@ static void sendValue(char name, int value) {
 }
 
 void TransmittData() {
-  sendValue('P', GetPitch());
-  sendValue('A', IsArmed());
-  sendValue('R', GetRoll());
-  sendValue('T', GetThrottle());
-  sendValue('Y', GetYaw());
+  sendValue(radioPacketChars.Pitch, GetPitch());
+  sendValue(radioPacketChars.Armed, IsArmed());
+  sendValue(radioPacketChars.Roll, GetRoll());
+  sendValue(radioPacketChars.Throttle, GetThrottle());
+  sendValue(radioPacketChars.Yaw, GetYaw());
 }
