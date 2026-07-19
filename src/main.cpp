@@ -13,20 +13,31 @@ static void initRadio() {
 }
 
 static void FlightController() {
-  SetState(State::CALIBRATING);
-  InitBatteryInfo();
-  InitServoController();
+  InitFlightController();
   if (GetFlightState().state == State::PANIC) {
     uBit.sleep(10000);
-    return;
-  } else {
-    SetState(State::DISARMED);
+    return; // MicroBit will freeze
   }
+  SetState(State::DISARMED);
 
   while (true) {
     SetBatteryInfo();
     FlushRadioBuffer();
+    if (IsDroneArmed()) {
+      SetState(State::ARMED);
+    } else {
+      SetState(State::DISARMED);
+    }
     UpdateView();
+
+    switch (GetFlightState().state) {
+    case State::ARMED:
+      SetThrottle();
+      break;
+    default:
+      SetAllPropellerActuation(0, 0, 0, 0);
+      break;
+    }
     uBit.sleep(100);
   }
 }

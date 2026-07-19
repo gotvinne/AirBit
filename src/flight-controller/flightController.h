@@ -1,7 +1,9 @@
 #pragma once
+#include "WonderKit/I2C.h"
+#include "WonderKit/servoController.h"
 #include "battery.h"
+#include "pid.h"
 #include "receiver.h"
-#include "servoController.h"
 #include "ultrasonicSensor.h"
 #include "view.h"
 #include <MicroBit.h>
@@ -16,7 +18,7 @@
 
 #define MICROBIT_UBIT_AS_STATIC_OBJECT
 
-enum class State : uint8_t { CALIBRATING, CHARGING, DISARMED, ARMED, PANIC };
+enum class State : uint8_t { CALIBRATING, CHARGING, ARMED, DISARMED, PANIC };
 
 struct FlightState {
   int altitude;
@@ -34,5 +36,7 @@ extern MicroBit uBit;
 const FlightState &GetFlightState();
 
 void SetState(State state);
+
+void InitFlightController();
 
 #endif

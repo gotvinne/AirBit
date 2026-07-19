@@ -28,7 +28,9 @@ Reading from the Pin P0 is a noisy measurement so a logical lowpass filter is im
 
 An charge plug icon is displayed when the battery needs charging, during the charging a battery icon is displayed.
 
-### Servo Motor & IMU (WonderKit Black board)
+## WonderKit Black board
+
+### Servo Motor & IMU 
 
 In order to apply actuation to the system, the MicroBit v2 is connected to a ServoMotor via its pins. The I2C Protocol (Inter-Integrated Circuit) is implemented as communication layer between the two modules using P2 (SDA) and P1 (SCL). Based on this serial-connection the Microbit can read and write actuation to the propellers. By writing to the Servo Motor registers, the servo motor will apply a PWM signal to the properllers. 
 
@@ -37,3 +39,12 @@ The I2C functionality availiable in the sdk can be found [here](../../microbit-v
 ![I2C setup](../../img/i2c.png)
 
 ![Motor setup](../../img/motor_registers.png)
+
+### LED Display
+
+- If not able to setup I2C, "I2C" will be displayed on the screen.
+
+**Servo motor connection**
+- If MicroBit is able to read/write to servo motor, "M" is displayed on the screen.
+- - If *no connection* to servo motor, "NM" will be displayed on the screen.
+

@@ -1,6 +1,6 @@
 #include "orientation.h"
-#include "handController.h"
 #include "../utilities.h"
+#include "handController.h"
 #include <MicroBit.h>
 
 // orientation variables:
