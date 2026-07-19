@@ -47,3 +47,7 @@ void DisplayYaw(int yaw, Image &ledDisplay) {
   uint16_t x = static_cast<uint16_t>(yaw / 30 + 2);
   ledDisplay.setPixelValue(x, 0, LED_ON);
 }
+
+int Clamp(int value, int min, int max) {
+  return (value < min) ? min : (value > max) ? max : value;
+}

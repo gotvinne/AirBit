@@ -1,4 +1,5 @@
 #include "orientation.h"
+#include "../utilities.h"
 #include "handController.h"
 #include <MicroBit.h>
 
@@ -8,16 +9,9 @@ static int roll = 0;
 
 const int ANGULAR_THRESHOLD = 45;
 const int STEADY_STATE_THRESHOLD = 15;
-/*
- * Clamp the variable inside interval
- */
-static int clampThreshold(int value, int threshold) {
-  return std::min(std::max(value, -threshold),
-                  threshold); // implementing std::clamp
-}
 
 static int clampAngles(int value, int threshold) {
-  int clampedValue = clampThreshold(value, threshold);
+  int clampedValue = Clamp(value, -threshold, threshold);
 
   // Set steady state reference:
   if (clampedValue > -STEADY_STATE_THRESHOLD &&
