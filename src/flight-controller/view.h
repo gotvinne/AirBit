@@ -1,3 +1,5 @@
 #pragma once
 
-void UpdateView();
+void UpdateViewIdle();
+void UpdateViewCharging();
+void UpdateViewBatteryLow();
