@@ -23,11 +23,11 @@ const int NUM_MOTORS = 4;
 
 enum class State : uint8_t {
   CALIBRATING,
+  ERROR,
   CHARGING,
   LOWBATTERY,
-  ARMED,
   IDLE,
-  ERROR,
+  ARMED,
 };
 
 enum class MotorIndex : uint8_t {
@@ -41,6 +41,7 @@ struct FlightState {
   int altitude;
   State state;
   uint8_t propellerActuation[NUM_MOTORS];
+  ManagedString errorMessage;
 };
 
 #ifdef MICROBIT_UBIT_AS_STATIC_OBJECT
@@ -53,6 +54,8 @@ extern MicroBit uBit;
 const FlightState &GetFlightState();
 
 void SetState(State state);
+
+void SetErrorMessage(const ManagedString &message);
 
 void InitFlightController();
 

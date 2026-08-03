@@ -5,18 +5,29 @@ static FlightState flightState{
   altitude : 0,
   state : State::CALIBRATING,
   propellerActuation : {0, 0, 0, 0}, // cw1_v, cw2_v, ccw1_v, ccw2_v
+  errorMessage : "",
 };
 
 void InitFlightController() {
   InitBatteryInfo();
+  if (GetFlightState().state == State::ERROR) {
+    return;
+  }
   InitI2C(); // NB! I2C must be initialized before the servo controller, as the
              // servo controller relies on I2C communication.
+  if (GetFlightState().state == State::ERROR) {
+    return;
+  }
   InitServoController();
 }
 
 const FlightState &GetFlightState() { return flightState; }
 
 void SetState(State state) { flightState.state = state; }
+
+void SetErrorMessage(const ManagedString &message) {
+  flightState.errorMessage = message;
+}
 
 void UpdatePropellerActuation(MotorIndex motorIndex, uint8_t actuation) {
   flightState.propellerActuation[static_cast<uint8_t>(motorIndex)] = actuation;

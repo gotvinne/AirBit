@@ -10,13 +10,17 @@ static void initRadio() {
   uBit.radio.setGroup(RADIO_GROUP);
   uBit.display.print(RADIO_GROUP);
   uBit.sleep(3000);
+  uBit.display.clear();
 }
 
 static void FlightController() {
   InitFlightController();
   if (GetFlightState().state == State::ERROR) {
-    uBit.sleep(10000);
-    return; // MicroBit will freeze
+    while (true) {
+      uBit.display.scroll(GetFlightState().errorMessage);
+      uBit.sleep(1000);
+    }
+    return;
   }
   SetState(State::IDLE);
 
