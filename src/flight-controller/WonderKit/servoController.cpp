@@ -31,7 +31,7 @@ static uint8_t lastPropellerActuation[NUM_MOTORS] = {0, 0, 0, 0};
 
 static void failSafe() {
   SetState(State::ERROR);
-  uBit.display.print("NM"); // No Motor detected
+  SetErrorMessage("NM"); // No Motor detected
 }
 
 static void WriteToServoController(uint8_t reg, uint8_t value) {

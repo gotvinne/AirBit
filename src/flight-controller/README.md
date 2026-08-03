@@ -44,6 +44,7 @@ The I2C functionality availiable in the sdk can be found [here](../../microbit-v
 
 ### LED Display
 
+- If battery not connected, "BAT" will be displayed on the screen.
 - If not able to setup I2C, "I2C" will be displayed on the screen.
 
 **Servo motor connection**
