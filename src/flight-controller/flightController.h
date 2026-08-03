@@ -7,6 +7,7 @@
 #include "ultrasonicSensor.h"
 #include "view.h"
 #include <MicroBit.h>
+#include <cstdint>
 
 // FlightController.h is the umbrella header for the flight controller module,
 // which includes all the necessary headers for the flight controller
@@ -18,12 +19,28 @@
 
 #define MICROBIT_UBIT_AS_STATIC_OBJECT
 
-enum class State : uint8_t { CALIBRATING, CHARGING, ARMED, DISARMED, PANIC };
+const int NUM_MOTORS = 4;
+
+enum class State : uint8_t {
+  CALIBRATING,
+  CHARGING,
+  LOWBATTERY,
+  ARMED,
+  IDLE,
+  ERROR,
+};
+
+enum class MotorIndex : uint8_t {
+  CW1,  // Upper left motor
+  CW2,  // Lower right motor
+  CCW1, // Upper right motor
+  CCW2  // Lower left motor
+};
 
 struct FlightState {
   int altitude;
   State state;
-  uint8_t motorActuation[4];
+  uint8_t propellerActuation[NUM_MOTORS];
 };
 
 #ifdef MICROBIT_UBIT_AS_STATIC_OBJECT
@@ -38,5 +55,11 @@ const FlightState &GetFlightState();
 void SetState(State state);
 
 void InitFlightController();
+
+void UpdatePropellerActuation(MotorIndex motorIndex, uint8_t actuation);
+
+void UpdatePropellerActuationEqual(uint8_t actuation);
+
+void CheckFlightState();
 
 #endif

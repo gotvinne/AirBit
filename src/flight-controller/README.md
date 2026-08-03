@@ -1,6 +1,8 @@
 # Flight controller
 Reimplement the javascript logic found [here](https://github.com/gomakekit/Airbit_V2/blob/master/custom.ts).
 
+![State machine](../../img/state-machine.png)
+
 ### Ultrasonic sensor (external hardware HC-SR04)
 
 The microbit PCB is equiped with a barometer which can be used to calculate the altitude of the quadcopter. However, due to the properllers impacting the sounding pressure, this measurement is not reliable. To circumvent this problem, and retieving a reliable measurement, an external ultrasonic sensor can be connected to the microbit.

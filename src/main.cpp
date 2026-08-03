@@ -14,30 +14,39 @@ static void initRadio() {
 
 static void FlightController() {
   InitFlightController();
-  if (GetFlightState().state == State::PANIC) {
+  if (GetFlightState().state == State::ERROR) {
     uBit.sleep(10000);
     return; // MicroBit will freeze
   }
-  SetState(State::DISARMED);
+  SetState(State::IDLE);
 
   while (true) {
     SetBatteryInfo();
     FlushRadioBuffer();
-    if (IsDroneArmed()) {
-      SetState(State::ARMED);
-    } else {
-      SetState(State::DISARMED);
-    }
-    UpdateView();
+    CheckFlightState();
 
     switch (GetFlightState().state) {
     case State::ARMED:
+      UpdateViewIdle();
       SetThrottle();
       break;
-    default:
-      SetAllPropellerActuation(0, 0, 0, 0);
+    case State::IDLE:
+      UpdateViewIdle();
+      UpdatePropellerActuationEqual(0);
       break;
+    case State::LOWBATTERY:
+      UpdateViewBatteryLow();
+      UpdatePropellerActuationEqual(0);
+      break;
+    case State::CHARGING:
+      UpdateViewCharging();
+      UpdatePropellerActuationEqual(0);
+      break;
+    default:
+      UpdatePropellerActuationEqual(0);
+      return; // If going to CALIBRATING or ERROR state
     }
+
     uBit.sleep(100);
   }
 }
