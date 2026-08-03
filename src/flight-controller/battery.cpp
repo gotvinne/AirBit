@@ -48,11 +48,17 @@ void SetBatteryInfo() {
  * Calibrating battery
  */
 void InitBatteryInfo() {
+  double meas;
   for (int i = 0; i < 5; i++) {
-    double meas = readBatteryMilliVolt();
+    meas = readBatteryMilliVolt();
     batteryMilliVolt = smoothMeasurement(meas);
     batteryState.batteryLevel = milliVoltToBatteryLevel(batteryMilliVolt);
     // uBit.display.scroll(static_cast<uint16_t>(batteryLevel));
     // uBit.sleep(100);
+  }
+  // If the measurement is 0 after calibration, battery is not connected
+  if (meas == 0) {
+    SetState(State::ERROR);
+    SetErrorMessage("BAT");
   }
 }
