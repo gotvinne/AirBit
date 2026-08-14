@@ -18,7 +18,15 @@ void InitFlightController() {
   if (GetFlightState().state == State::ERROR) {
     return;
   }
-  InitServoController();
+  InitGyro();
+  if (GetFlightState().state == State::ERROR) {
+    return;
+  }
+  InitServo();
+  if (GetFlightState().state == State::ERROR) {
+    return;
+  }
+  CalibrateAccelerometer();
 }
 
 const FlightState &GetFlightState() { return flightState; }
@@ -38,6 +46,19 @@ void UpdatePropellerActuationEqual(uint8_t actuation) {
     UpdatePropellerActuation(static_cast<MotorIndex>(i), actuation);
   }
   SetPropellerActuation();
+}
+
+void MotorMixingAlg(int throttle, int yaw, int pitch, int roll) {
+  // Motor mixing algorithm for quadcopter in X configuration
+  UpdatePropellerActuation(MotorIndex::CCW1,
+                           throttle + yaw + pitch +
+                               roll); // Front right motor (CCW)
+  UpdatePropellerActuation(MotorIndex::CW1, throttle - yaw + pitch -
+                                                roll); // Front left motor (CW)
+  UpdatePropellerActuation(MotorIndex::CW2, throttle - yaw - pitch +
+                                                roll); // Back right motor (CW)
+  UpdatePropellerActuation(MotorIndex::CCW2, throttle + yaw - pitch -
+                                                 roll); // Back left motor (CCW)
 }
 
 void CheckFlightState() {

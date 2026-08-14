@@ -1,6 +1,7 @@
 #pragma once
-#include "WonderKit/I2C.h"
-#include "WonderKit/servoController.h"
+#include "BlackBoard/I2C.h"
+#include "BlackBoard/gyro.h"
+#include "BlackBoard/servo.h"
 #include "battery.h"
 #include "pid.h"
 #include "receiver.h"
@@ -62,6 +63,8 @@ void InitFlightController();
 void UpdatePropellerActuation(MotorIndex motorIndex, uint8_t actuation);
 
 void UpdatePropellerActuationEqual(uint8_t actuation);
+
+void MotorMixingAlg(int throttle, int yaw, int pitch, int roll);
 
 void CheckFlightState();
 
