@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
 
-void InitServoController();
+void InitServo();
 
 void SetPropellerActuation();
