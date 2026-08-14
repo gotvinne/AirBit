@@ -27,6 +27,8 @@ static void FlightController() {
   while (true) {
     SetBatteryInfo();
     FlushRadioBuffer();
+    UpdateFlightOrientation();
+    UpdateGyroMeasurements();
     CheckFlightState();
 
     switch (GetFlightState().state) {
