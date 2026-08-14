@@ -1,4 +1,3 @@
-
 ## AirBit Drone project
 
 - C/C++ code based on micro-tools framework: https://github.com/c272/micro-tools 
@@ -13,7 +12,6 @@
 ![img/party.png](img/party.png)
 
 PARTY: Pitch, arm, roll, throttle, yaw
-
 
 ### Setup
 There are some dependancies needed: 
@@ -30,7 +28,6 @@ This can be done via brew:
 brew install cmake python3
 brew install --cask gcc-arm-embedded
 ```
-
 
 ```console
 ./microinstall.sh
@@ -74,6 +71,20 @@ In order allow debugging, the project needs to be built by navigating into the m
 
 ```console
 python3 build.py
+```
+
+### Serial debugging using screen (putty on windows)
+
+You can debug the code by writing information to uBit.serial. E.g
+
+```console
+uBit.serial.printf("pitchDps: %d rollDps: %d yawDps: %d\n",
+                   state.rollRate, state.pitchRate, state.yawRate);
+```
+
+```console
+ls /dev/tty.* // Available devices for serial commands
+screen /dev/tty.usbmodem144402 115200 // Read serial output using UART
 ```
 
 ### Linter
