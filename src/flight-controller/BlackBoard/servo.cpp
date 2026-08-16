@@ -21,8 +21,9 @@ constexpr uint8_t MOTOR_CW1_REG = 4;
 constexpr uint8_t MOTOR_CCW1_REG = 2;
 constexpr uint8_t MOTOR_CW2_REG = 3;
 constexpr uint8_t MOTOR_CCW2_REG = 5;
-constexpr uint8_t motorRegs[] = {MOTOR_CW1_REG, MOTOR_CW2_REG, MOTOR_CCW1_REG,
-                                 MOTOR_CCW2_REG};
+constexpr uint8_t motorRegs[] = {
+    MOTOR_CCW1_REG, MOTOR_CW1_REG, MOTOR_CW2_REG,
+    MOTOR_CCW2_REG}; // NB! The order must match the MotorIndex
 
 const int MAX_ACTUATION = 255;
 const int MIN_ACTUATION = 0;
