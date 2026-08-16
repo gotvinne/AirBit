@@ -25,12 +25,8 @@ constexpr int GYRO_CALIBRATION_SAMPLES = 100;
 
 static GyroState gyroState{
   isAvailable : false,
-  rollOffset : 0,
-  pitchOffset : 0,
-  yawOffset : 0,
-  rollRate : 0,
-  pitchRate : 0,
-  yawRate : 0
+  offsets : {0, 0, 0},
+  ratesDps : {0, 0, 0},
 };
 
 static bool writeRegister(uint8_t reg, uint8_t value) {
@@ -63,9 +59,9 @@ static void calibrateGyroOffsets() {
     uBit.sleep(5);
   }
 
-  gyroState.rollOffset = rollSum / GYRO_CALIBRATION_SAMPLES;
-  gyroState.pitchOffset = pitchSum / GYRO_CALIBRATION_SAMPLES;
-  gyroState.yawOffset = yawSum / GYRO_CALIBRATION_SAMPLES;
+  gyroState.offsets.roll = rollSum / GYRO_CALIBRATION_SAMPLES;
+  gyroState.offsets.pitch = pitchSum / GYRO_CALIBRATION_SAMPLES;
+  gyroState.offsets.yaw = yawSum / GYRO_CALIBRATION_SAMPLES;
 }
 
 void InitGyro() {
@@ -105,24 +101,24 @@ void UpdateGyroMeasurements() {
   }
 
   const float rawPitch =
-      static_cast<float>(readGyroReg(GYRO_XOUT) - gyroState.pitchOffset);
+      static_cast<float>(readGyroReg(GYRO_XOUT) - gyroState.offsets.pitch);
   const float rawRoll =
-      static_cast<float>(readGyroReg(GYRO_YOUT) - gyroState.rollOffset);
+      static_cast<float>(readGyroReg(GYRO_YOUT) - gyroState.offsets.roll);
   const float rawYaw =
-      static_cast<float>(readGyroReg(GYRO_ZOUT) - gyroState.yawOffset);
+      static_cast<float>(readGyroReg(GYRO_ZOUT) - gyroState.offsets.yaw);
 
-  gyroState.pitchRate = static_cast<int>(rawPitch / GYRO_SCALE_2000_DPS);
-  gyroState.rollRate = static_cast<int>(rawRoll / GYRO_SCALE_2000_DPS);
-  gyroState.yawRate = static_cast<int>(rawYaw / GYRO_SCALE_2000_DPS);
+  gyroState.ratesDps.pitch = static_cast<int>(rawPitch / GYRO_SCALE_2000_DPS);
+  gyroState.ratesDps.roll = static_cast<int>(rawRoll / GYRO_SCALE_2000_DPS);
+  gyroState.ratesDps.yaw = static_cast<int>(rawYaw / GYRO_SCALE_2000_DPS);
 
   // uBit.serial.printf("rollDps=%d pitchDps=%d yawDps=%d\n",
-  //                 gyroState.rollRate,
-  //               gyroState.pitchRate,
-  //             gyroState.yawRate);
+  //                 gyroState.ratesDps.roll,
+  //               gyroState.ratesDps.pitch,
+  //             gyroState.ratesDps.yaw);
 }
 
-const int &GetRollRate() { return gyroState.rollRate; }
-const int &GetPitchRate() { return gyroState.pitchRate; }
-const int &GetYawRate() { return gyroState.yawRate; }
+int GetRollRate() { return gyroState.ratesDps.roll; }
+int GetPitchRate() { return gyroState.ratesDps.pitch; }
+int GetYawRate() { return gyroState.ratesDps.yaw; }
 
 bool IsGyroAvailable() { return gyroState.isAvailable; }

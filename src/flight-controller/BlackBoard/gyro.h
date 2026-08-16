@@ -3,19 +3,21 @@
 #include <MicroBit.h>
 #include <cstdint>
 
+struct GyroAttitude {
+  int pitch;
+  int roll;
+  int yaw;
+};
+
 struct GyroState {
   bool isAvailable;
-  int rollOffset;
-  int pitchOffset;
-  int yawOffset;
-  int rollRate;
-  int pitchRate;
-  int yawRate;
+  GyroAttitude offsets;
+  GyroAttitude ratesDps;
 };
 
 void InitGyro();
 void UpdateGyroMeasurements();
-const int &GetRollRate();
-const int &GetPitchRate();
-const int &GetYawRate();
+int GetRollRate();
+int GetPitchRate();
+int GetYawRate();
 bool IsGyroAvailable();
