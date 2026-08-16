@@ -44,11 +44,7 @@ void FlushRadioBuffer() {
 }
 
 bool IsDroneArmed() { return armed; }
-
-const int &GetDroneThrottle() { return throttle; }
-
-const int &GetDroneRoll() { return roll; }
-
-const int &GetDronePitch() { return pitch; }
-
-const int &GetDroneYaw() { return yaw; }
+int GetDroneThrottle() { return throttle; }
+int GetDroneRoll() { return roll; }
+int GetDronePitch() { return pitch; }
+int GetDroneYaw() { return yaw; }
