@@ -16,4 +16,6 @@ extern MicroBit uBit; // Target the same uBit as in main.cpp
 extern MicroBit &uBit;
 #endif
 
+void InitHandController();
+
 #endif
