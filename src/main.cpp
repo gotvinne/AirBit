@@ -58,8 +58,7 @@ static void FlightController() {
 }
 
 static void HandController() {
-  SetBtnsHandlers();
-  SetP1High();
+  InitHandController();
 
   while (true) {
     SetOrientation();
@@ -67,6 +66,7 @@ static void HandController() {
     CheckPanic();
     TransmittData();
     ReadPins();
+
     uBit.sleep(100);
   }
 }
@@ -74,6 +74,6 @@ static void HandController() {
 int main() {
   uBit.init();
   initRadio();
-  FlightController();
+  HandController();
   return 0;
 }
