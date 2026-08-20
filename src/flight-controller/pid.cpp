@@ -1,25 +1,47 @@
 #include "pid.h"
-#include "BlackBoard/gyro.h"
+#include "BlackBoard/imu.h"
 #include "flightController.h"
 
 const uint8_t ARMED_THROTTLE = 5;
 constexpr int CALIBRATION_SAMPLES = 100;
 
 // PID controller parameters
-const int KP_PITCH_ROLL = 1;
-const int KD_PITCH_ROLL = 0;
-const int KI_PITCH_ROLL = 1;
-const int KP_YAW = 1;
-const int KD_YAW = 0;
+const float KP_PITCH_ROLL = 0.9;
+const float KD_PITCH_ROLL = 15;
+const float KI_PITCH_ROLL = 0.004;
+const float KP_YAW = 5;
+const float KD_YAW = 70;
 
-// orientation variables:
+// Orientation variables:
 static int pitchOffset = 0;
 static int rollOffset = 0;
 
-static int deltaTime = 0;
-static unsigned long lastTime = 0;
+// Time tracking variables for PID controller
+static float epSum = 0;
+static float erSum = 0;
 
-void CalibrateAccelerometer() {
+static PIDOutput PIDCalculate() {
+  int measuredPitch = uBit.accelerometer.getPitch() - pitchOffset;
+  int measuredRoll = uBit.accelerometer.getRoll() - rollOffset;
+  uBit.serial.printf("roll: %d, pitch: %d\t", measuredRoll, measuredPitch);
+
+  int ep = GetDronePitch() - measuredPitch;
+  int er = GetDroneRoll() - measuredRoll;
+  epSum += ep;
+  erSum += er;
+
+  // u = Kp * ex + Ki * integral(ex) + Kd * derivative(ex)
+  const int pitchCmd =
+      static_cast<int>(KP_PITCH_ROLL * ep + KI_PITCH_ROLL * epSum +
+                       KD_PITCH_ROLL * GetPitchRate());
+  const int rollCmd =
+      static_cast<int>(KP_PITCH_ROLL * er + KI_PITCH_ROLL * erSum +
+                       KD_PITCH_ROLL * GetRollRate());
+
+  return {0, 0};
+}
+
+void CalibrateDroneAccelerometer() {
   int rollSum = 0;
   int pitchSum = 0;
 
@@ -33,20 +55,12 @@ void CalibrateAccelerometer() {
   pitchOffset = pitchSum / CALIBRATION_SAMPLES;
 }
 
-void UpdateFlightOrientation() {
-  int measuredPitch = uBit.accelerometer.getPitch() - pitchOffset;
-  int measuredRoll = uBit.accelerometer.getRoll() - rollOffset;
-  deltaTime = static_cast<int>(uBit.systemTime() - lastTime);
-  lastTime = uBit.systemTime();
-
-  // uBit.serial.printf("roll: %d, pitch: %d\n", measuredRoll, measuredPitch);
-}
-
-void SetThrottle() {
+void SetPIDActuation() {
   uint8_t throttle = GetDroneThrottle() * 2.55;
   if (throttle == 0) {
     UpdatePropellerActuationEqual(ARMED_THROTTLE);
   } else {
-    UpdatePropellerActuationEqual(throttle);
+    PIDOutput pidOutput = PIDCalculate();
+    MotorMixing(throttle, 0, pidOutput.pitch, pidOutput.roll);
   }
 }

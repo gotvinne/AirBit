@@ -15,9 +15,9 @@ static void initRadio() {
 
 static void FlightController() {
   InitFlightController();
-  if (GetFlightState().state == State::ERROR) {
+  if (GetFlightState() == State::ERROR) {
     while (true) {
-      uBit.display.scroll(GetFlightState().errorMessage);
+      uBit.display.scroll(GetErrorMessage());
       uBit.sleep(1000);
     }
     return;
@@ -27,14 +27,14 @@ static void FlightController() {
   while (true) {
     SetBatteryInfo();
     FlushRadioBuffer();
-    UpdateFlightOrientation();
-    UpdateGyroMeasurements();
+    UpdateIMUMeasurements();
     CheckFlightState();
 
-    switch (GetFlightState().state) {
+    const State &currentState = GetFlightState();
+    switch (currentState) {
     case State::ARMED:
       UpdateViewIdle();
-      SetThrottle();
+      SetPIDActuation();
       break;
     case State::IDLE:
       UpdateViewIdle();
@@ -74,6 +74,6 @@ static void HandController() {
 int main() {
   uBit.init();
   initRadio();
-  HandController();
+  FlightController();
   return 0;
 }
