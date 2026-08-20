@@ -48,8 +48,7 @@ void SetOrientation() {
   int measuredRoll = uBit.accelerometer.getRoll() - rollOffset;
   roll = clampAngles(measuredRoll, ANGULAR_THRESHOLD);
 
-  // uBit.serial.printf("roll: %d, pitch: %d\n rollOffset: %d, pitchOffset:
-  // %d\n", roll, pitch, rollOffset, pitchOffset);
+  // uBit.serial.printf("roll: %d, pitch: %d\t", roll, pitch);
 }
 
 int GetPitch() { return pitch; }
