@@ -62,7 +62,7 @@ static void WritePropellerActuation(uint8_t motor, uint8_t actuation) {
 }
 
 void SetPropellerActuation() {
-  const uint8_t *motorValues = GetFlightState().propellerActuation;
+  const uint8_t *motorValues = GetPropellerActuation();
   for (int i = 0; i < NUM_MOTORS; ++i) {
     if (motorValues[i] == lastPropellerActuation[i]) {
       continue; // Skip writing to the servo controller if the actuation value

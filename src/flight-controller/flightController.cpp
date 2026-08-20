@@ -14,26 +14,29 @@ static void updatePropellerActuation(MotorIndex motorIndex, uint8_t actuation) {
 
 void InitFlightController() {
   InitBatteryInfo();
-  if (GetFlightState().state == State::ERROR) {
+  const State &currentState = GetFlightState();
+  if (currentState == State::ERROR) {
     return;
   }
   InitI2C(); // NB! I2C must be initialized before the servo controller, as the
              // servo controller relies on I2C communication.
-  if (GetFlightState().state == State::ERROR) {
+  if (currentState == State::ERROR) {
     return;
   }
-  InitGyro();
-  if (GetFlightState().state == State::ERROR) {
+  InitIMU();
+  if (currentState == State::ERROR) {
     return;
   }
   InitServo();
-  if (GetFlightState().state == State::ERROR) {
+  if (currentState == State::ERROR) {
     return;
   }
   CalibrateDroneAccelerometer();
 }
 
-const FlightState &GetFlightState() { return flightState; }
+const State &GetFlightState() { return flightState.state; }
+
+uint8_t *GetPropellerActuation() { return flightState.propellerActuation; }
 
 void SetState(State state) { flightState.state = state; }
 
@@ -65,17 +68,21 @@ void MotorMixing(int throttle, int yaw, int pitch, int roll) {
 }
 
 void CheckFlightState() {
-  if (GetFlightState().state == State::ARMED) {
+  const State &currentState = GetFlightState();
+  if (currentState == State::ARMED) {
     SetState(IsDroneArmed() ? State::ARMED : State::IDLE);
     return;
   }
-  if (GetBatteryState().isCharging) { // If the battery is charging, set the
-                                      // state to CHARGING again
+  const BatteryState &batteryState = GetBatteryState();
+  if (batteryState.isCharging &&
+      !batteryState.debugging) { // If the battery is charging, set the
+                                 // state to CHARGING again
     SetState(State::CHARGING);
     return;
   }
-  if (GetBatteryState().batteryLevel == BatteryLevel::EMPTY ||
-      GetBatteryState().batteryLevel == BatteryLevel::LOW) {
+  if ((batteryState.batteryLevel == BatteryLevel::EMPTY ||
+       batteryState.batteryLevel == BatteryLevel::LOW) &&
+      !batteryState.debugging) {
     SetState(State::LOWBATTERY);
     return;
   } else {

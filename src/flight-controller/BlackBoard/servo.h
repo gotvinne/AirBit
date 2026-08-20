@@ -2,5 +2,4 @@
 #include <cstdint>
 
 void InitServo();
-
 void SetPropellerActuation();

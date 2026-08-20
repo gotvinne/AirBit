@@ -1,6 +1,6 @@
 #pragma once
 #include "BlackBoard/I2C.h"
-#include "BlackBoard/gyro.h"
+#include "BlackBoard/imu.h"
 #include "BlackBoard/servo.h"
 #include "battery.h"
 #include "pid.h"
@@ -52,13 +52,15 @@ extern MicroBit uBit; // Target the same uBit as in main.cpp
 extern MicroBit uBit;
 #endif
 
-const FlightState &GetFlightState();
+const State &GetFlightState();
 
 void SetState(State state);
 
 void SetErrorMessage(const ManagedString &message);
 
 ManagedString GetErrorMessage();
+
+uint8_t *GetPropellerActuation();
 
 void InitFlightController();
 
