@@ -11,12 +11,13 @@ int batteryMilliVolt = 3800;
 static BatteryState batteryState{
   batteryLevel : BatteryLevel::MEDIUMLOW,
   isCharging : false,
+  debugging : true,
 };
 
 static int readBatteryMilliVolt() {
   int p0 = uBit.io.P0.getAnalogValue();
   batteryState.isCharging = p0 >= CHARGING_THRESHOLD;
-  if (batteryState.isCharging) {
+  if (batteryState.isCharging && !batteryState.debugging) {
     SetState(State::CHARGING);
   }
   return p0 * BATTERY_FACTOR;
