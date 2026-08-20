@@ -1,5 +1,9 @@
 #pragma once
 
-void UpdateFlightOrientation();
-void CalibrateAccelerometer();
-void SetThrottle();
+struct PIDOutput {
+  int pitch;
+  int roll;
+};
+
+void CalibrateDroneAccelerometer();
+void SetPIDActuation();

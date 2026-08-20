@@ -2,9 +2,9 @@
 
 // Reference variables:
 bool IsDroneArmed();
-const int &GetDroneThrottle();
-const int &GetDroneRoll();
-const int &GetDronePitch();
-const int &GetDroneYaw();
+int GetDroneThrottle();
+int GetDroneRoll();
+int GetDronePitch();
+int GetDroneYaw();
 
 void FlushRadioBuffer();

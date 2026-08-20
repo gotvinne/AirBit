@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>
 
 void SetOrientation();
 void CalibrateHandAccelerometer();

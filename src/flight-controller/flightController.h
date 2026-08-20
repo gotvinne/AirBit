@@ -1,6 +1,6 @@
 #pragma once
 #include "BlackBoard/I2C.h"
-#include "BlackBoard/gyro.h"
+#include "BlackBoard/imu.h"
 #include "BlackBoard/servo.h"
 #include "battery.h"
 #include "pid.h"
@@ -32,9 +32,9 @@ enum class State : uint8_t {
 };
 
 enum class MotorIndex : uint8_t {
+  CCW1, // Upper right motor
   CW1,  // Upper left motor
   CW2,  // Lower right motor
-  CCW1, // Upper right motor
   CCW2  // Lower left motor
 };
 
@@ -52,19 +52,21 @@ extern MicroBit uBit; // Target the same uBit as in main.cpp
 extern MicroBit uBit;
 #endif
 
-const FlightState &GetFlightState();
+const State &GetFlightState();
 
 void SetState(State state);
 
 void SetErrorMessage(const ManagedString &message);
 
-void InitFlightController();
+ManagedString GetErrorMessage();
 
-void UpdatePropellerActuation(MotorIndex motorIndex, uint8_t actuation);
+uint8_t *GetPropellerActuation();
+
+void InitFlightController();
 
 void UpdatePropellerActuationEqual(uint8_t actuation);
 
-void MotorMixingAlg(int throttle, int yaw, int pitch, int roll);
+void MotorMixing(int throttle, int yaw, int pitch, int roll);
 
 void CheckFlightState();
 

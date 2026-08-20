@@ -14,6 +14,7 @@ enum class BatteryLevel : uint16_t {
 struct BatteryState {
   BatteryLevel batteryLevel;
   bool isCharging;
+  bool debugging; // Micro-USB not interfere with charging
 };
 
 const BatteryState &GetBatteryState();

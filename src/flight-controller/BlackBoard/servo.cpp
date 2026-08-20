@@ -21,8 +21,9 @@ constexpr uint8_t MOTOR_CW1_REG = 4;
 constexpr uint8_t MOTOR_CCW1_REG = 2;
 constexpr uint8_t MOTOR_CW2_REG = 3;
 constexpr uint8_t MOTOR_CCW2_REG = 5;
-constexpr uint8_t motorRegs[] = {MOTOR_CW1_REG, MOTOR_CW2_REG, MOTOR_CCW1_REG,
-                                 MOTOR_CCW2_REG};
+constexpr uint8_t motorRegs[] = {
+    MOTOR_CCW1_REG, MOTOR_CW1_REG, MOTOR_CW2_REG,
+    MOTOR_CCW2_REG}; // NB! The order must match the MotorIndex
 
 const int MAX_ACTUATION = 255;
 const int MIN_ACTUATION = 0;
@@ -61,7 +62,7 @@ static void WritePropellerActuation(uint8_t motor, uint8_t actuation) {
 }
 
 void SetPropellerActuation() {
-  const uint8_t *motorValues = GetFlightState().propellerActuation;
+  const uint8_t *motorValues = GetPropellerActuation();
   for (int i = 0; i < NUM_MOTORS; ++i) {
     if (motorValues[i] == lastPropellerActuation[i]) {
       continue; // Skip writing to the servo controller if the actuation value
