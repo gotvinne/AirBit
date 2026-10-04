@@ -6,6 +6,7 @@
 struct IMUOffsets {
   int accX;
   int accY;
+  int accZ;
 
   int gyroX;
   int gyroY;
@@ -32,4 +33,6 @@ void UpdateIMUMeasurements();
 int GetRollRate();
 int GetPitchRate();
 int GetYawRate();
+int GetComplementaryRoll();
+int GetComplementaryPitch();
 bool IsIMUAvailable();
