@@ -11,7 +11,7 @@ int batteryMilliVolt = 3800;
 static BatteryState batteryState{
   batteryLevel : BatteryLevel::MEDIUMLOW,
   isCharging : false,
-  debugging : true,
+  debugging : false,
 };
 
 static int readBatteryMilliVolt() {
