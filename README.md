@@ -87,6 +87,8 @@ ls /dev/tty.* // Available devices for serial commands
 screen /dev/tty.usbmodem144402 115200 // Read serial output using UART
 ```
 
+NB! The serial print library on the Microbit does not support floating-point format printing. Numbers must be written decimal.
+
 ### Linter
 
 We want to utilize a dynamic analysis tool, which can linter codebase, not a static one
