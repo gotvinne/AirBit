@@ -5,5 +5,4 @@ struct PIDOutput {
   int roll;
 };
 
-void CalibrateDroneAccelerometer();
 void SetPIDActuation();

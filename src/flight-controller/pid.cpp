@@ -12,21 +12,13 @@ const float KI_PITCH_ROLL = 0.004;
 const float KP_YAW = 5;
 const float KD_YAW = 70;
 
-// Orientation variables:
-static int pitchOffset = 0;
-static int rollOffset = 0;
-
 // Time tracking variables for PID controller
 static float epSum = 0;
 static float erSum = 0;
 
 static PIDOutput PIDCalculate() {
-  int measuredPitch = uBit.accelerometer.getPitch() - pitchOffset;
-  int measuredRoll = uBit.accelerometer.getRoll() - rollOffset;
-  uBit.serial.printf("roll: %d, pitch: %d\t", measuredRoll, measuredPitch);
-
-  int ep = GetDronePitch() - measuredPitch;
-  int er = GetDroneRoll() - measuredRoll;
+  int ep = GetDronePitch() - GetComplementaryPitch();
+  int er = GetDroneRoll() - GetComplementaryRoll();
   epSum += ep;
   erSum += er;
 
@@ -39,20 +31,6 @@ static PIDOutput PIDCalculate() {
                        KD_PITCH_ROLL * GetRollRate());
 
   return {0, 0};
-}
-
-void CalibrateDroneAccelerometer() {
-  int rollSum = 0;
-  int pitchSum = 0;
-
-  for (int i = 0; i <= CALIBRATION_SAMPLES; i++) {
-    rollSum += uBit.accelerometer.getRoll();
-    pitchSum += uBit.accelerometer.getPitch();
-    uBit.sleep(5);
-  }
-
-  rollOffset = rollSum / CALIBRATION_SAMPLES;
-  pitchOffset = pitchSum / CALIBRATION_SAMPLES;
 }
 
 void SetPIDActuation() {

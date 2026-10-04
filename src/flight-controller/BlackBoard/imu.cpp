@@ -29,7 +29,8 @@ constexpr uint8_t ACCEL_LOW_PASS_FILTER_VALUE = 0x06;
 
 constexpr float GYRO_SCALE_2000_DPS =
     16.4f; // LSB scale factor for ±2000°/s full scale range
-constexpr float ACCEL_SCALE_2G = 16384.0f; // This is the number of counts per g.
+constexpr float ACCEL_SCALE_2G =
+    16384.0f; // This is the number of counts per g.
 constexpr float RAD_TO_DEG = 180.0f / 3.141592653589793f;
 constexpr int IMU_CALIBRATION_SAMPLES = 100;
 
@@ -86,7 +87,8 @@ static void calibrateImuOffsets() {
   imuState.offsets.gyroZ = gyroZSum / IMU_CALIBRATION_SAMPLES;
   imuState.offsets.accX = accXCounts / IMU_CALIBRATION_SAMPLES;
   imuState.offsets.accY = accYCounts / IMU_CALIBRATION_SAMPLES;
-  imuState.offsets.accZ = (accZCounts / IMU_CALIBRATION_SAMPLES) - static_cast<int>(ACCEL_SCALE_2G);
+  imuState.offsets.accZ =
+      (accZCounts / IMU_CALIBRATION_SAMPLES) - static_cast<int>(ACCEL_SCALE_2G);
 }
 
 static void updateGyro() {
@@ -100,37 +102,34 @@ static void updateGyro() {
   imuState.imu.rollRate = static_cast<int>(rawRollDps / GYRO_SCALE_2000_DPS);
   imuState.imu.yawRate = static_cast<int>(rawYawDps / GYRO_SCALE_2000_DPS);
 
-  //uBit.serial.printf("%spitchRate=%d\x1b[0m ",
-                  //imuState.imu.pitchRate < 0 ? "\x1b[31m" : "\x1b[32m",
-                  //imuState.imu.pitchRate);
-  //uBit.serial.printf("%srollRate=%d\x1b[0m ",
-                   //imuState.imu.rollRate < 0 ? "\x1b[31m" : "\x1b[32m",
-                   //imuState.imu.rollRate);
-
+  // uBit.serial.printf("%spitchRate=%d\x1b[0m ",
+  // imuState.imu.pitchRate < 0 ? "\x1b[31m" : "\x1b[32m",
+  // imuState.imu.pitchRate);
+  // uBit.serial.printf("%srollRate=%d\x1b[0m ",
+  // imuState.imu.rollRate < 0 ? "\x1b[31m" : "\x1b[32m",
+  // imuState.imu.rollRate);
 }
 
 static void updateAccelerometer() {
-  // ax, ay and az are calculated in g's, where 1g = 9.81 m/s^2. 
-  // Expected measurements are approximately ax=0, ay=0, az=1g when the drone is level and stationary.
-  const float ax =
-      static_cast<float>((readImuReg(ACCEL_XOUT) - imuState.offsets.accX) /
-      ACCEL_SCALE_2G);
-  const float ay =
-      static_cast<float>((readImuReg(ACCEL_YOUT) - imuState.offsets.accY) /
-      ACCEL_SCALE_2G);
-  const float az =
-      static_cast<float>((readImuReg(ACCEL_ZOUT) - imuState.offsets.accZ) /
-      ACCEL_SCALE_2G);
-  
-  rollAcc = atan2(-ay, az) * RAD_TO_DEG;
-  pitchAcc = asin(ax) * RAD_TO_DEG; // ax is measured in g. 
+  // ax, ay and az are calculated in g's, where 1g = 9.81 m/s^2.
+  // Expected measurements are approximately ax=0, ay=0, az=1g when the drone is
+  // level and stationary.
+  const float ax = static_cast<float>(
+      (readImuReg(ACCEL_XOUT) - imuState.offsets.accX) / ACCEL_SCALE_2G);
+  const float ay = static_cast<float>(
+      (readImuReg(ACCEL_YOUT) - imuState.offsets.accY) / ACCEL_SCALE_2G);
+  const float az = static_cast<float>(
+      (readImuReg(ACCEL_ZOUT) - imuState.offsets.accZ) / ACCEL_SCALE_2G);
 
-  //uBit.serial.printf("%srollAcc=%d\x1b[0m ",
-                   //rollAcc < 0 ? "\x1b[31m" : "\x1b[32m",
-                   //static_cast<int>(rollAcc));
-  //uBit.serial.printf("%spitchAcc=%d\x1b[0m ",
-                     //pitchAcc < 0 ? "\x1b[31m" : "\x1b[32m",
-                     //static_cast<int>(pitchAcc));
+  rollAcc = atan2(-ay, az) * RAD_TO_DEG;
+  pitchAcc = asin(ax) * RAD_TO_DEG; // ax is measured in g.
+
+  // uBit.serial.printf("%srollAcc=%d\x1b[0m ",
+  // rollAcc < 0 ? "\x1b[31m" : "\x1b[32m",
+  // static_cast<int>(rollAcc));
+  // uBit.serial.printf("%spitchAcc=%d\x1b[0m ",
+  // pitchAcc < 0 ? "\x1b[31m" : "\x1b[32m",
+  // static_cast<int>(pitchAcc));
 }
 
 static void printAccelerometerMeas(float ax, float ay, float az) {
@@ -138,15 +137,12 @@ static void printAccelerometerMeas(float ax, float ay, float az) {
   int ay_mg = static_cast<int>(ay * 1000.0f);
   int az_mg = static_cast<int>(az * 1000.0f);
 
-  uBit.serial.printf("%saxMg=%d\x1b[0m ",
-                   ax_mg < 0 ? "\x1b[31m" : "\x1b[32m",
-                   ax_mg);
-  uBit.serial.printf("%sayMg=%d\x1b[0m ",
-                   ay_mg < 0 ? "\x1b[31m" : "\x1b[32m",
-                   ay_mg);
-  uBit.serial.printf("%sazMg=%d\x1b[0m ",
-                   az_mg < 0 ? "\x1b[31m" : "\x1b[32m",
-                   az_mg);
+  uBit.serial.printf("%saxMg=%d\x1b[0m ", ax_mg < 0 ? "\x1b[31m" : "\x1b[32m",
+                     ax_mg);
+  uBit.serial.printf("%sayMg=%d\x1b[0m ", ay_mg < 0 ? "\x1b[31m" : "\x1b[32m",
+                     ay_mg);
+  uBit.serial.printf("%sazMg=%d\x1b[0m ", az_mg < 0 ? "\x1b[31m" : "\x1b[32m",
+                     az_mg);
 }
 
 static void complementaryFilter() {
@@ -165,12 +161,12 @@ static void complementaryFilter() {
   imuState.imu.roll = static_cast<int>(roll);
   imuState.imu.pitch = static_cast<int>(pitch);
   lastTimeMs = nowMs;
-  //uBit.serial.printf("%sroll=%d\x1b[0m ",
-                   //imuState.imu.roll < 0 ? "\x1b[31m" : "\x1b[32m",
-                   //imuState.imu.roll);
-  //uBit.serial.printf("%spitch=%d\x1b[0m ",
-                     //imuState.imu.pitch < 0 ? "\x1b[31m" : "\x1b[32m",
-                     //imuState.imu.pitch);
+  // uBit.serial.printf("%sroll=%d\x1b[0m ",
+  // imuState.imu.roll < 0 ? "\x1b[31m" : "\x1b[32m",
+  // imuState.imu.roll);
+  // uBit.serial.printf("%spitch=%d\x1b[0m ",
+  // imuState.imu.pitch < 0 ? "\x1b[31m" : "\x1b[32m",
+  // imuState.imu.pitch);
 }
 
 void InitIMU() {

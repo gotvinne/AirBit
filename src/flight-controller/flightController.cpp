@@ -31,7 +31,6 @@ void InitFlightController() {
   if (currentState == State::ERROR) {
     return;
   }
-  CalibrateDroneAccelerometer();
 }
 
 const State &GetFlightState() { return flightState.state; }
