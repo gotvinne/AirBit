@@ -23,11 +23,11 @@ void InitFlightController() {
   if (currentState == State::ERROR) {
     return;
   }
-  InitIMU();
+  InitServo();
   if (currentState == State::ERROR) {
     return;
   }
-  InitServo();
+  InitIMU();
   if (currentState == State::ERROR) {
     return;
   }
@@ -52,13 +52,17 @@ void UpdatePropellerActuationEqual(uint8_t actuation) {
   SetPropellerActuation();
 }
 
-void MotorMixing(int throttle, int yaw, int pitch, int roll) {
+void MotorMixing(uint8_t throttle, int8_t yaw, int8_t pitch, int8_t roll) {
   // Motor mixing algorithm for quadcopter in X configuration
+
+  // FRONT:
   updatePropellerActuation(MotorIndex::CCW1,
                            throttle + yaw + pitch +
                                roll); // Front right motor (CCW)
   updatePropellerActuation(MotorIndex::CW1, throttle - yaw + pitch -
                                                 roll); // Front left motor (CW)
+
+  // BACK:
   updatePropellerActuation(MotorIndex::CW2, throttle - yaw - pitch +
                                                 roll); // Back right motor (CW)
   updatePropellerActuation(MotorIndex::CCW2, throttle + yaw - pitch -
@@ -86,5 +90,49 @@ void CheckFlightState() {
     return;
   } else {
     SetState(IsDroneArmed() ? State::ARMED : State::IDLE);
+  }
+}
+
+void FlightController() {
+  InitFlightController();
+  if (GetFlightState() == State::ERROR) {
+    while (true) {
+      uBit.display.scroll(GetErrorMessage());
+      uBit.sleep(1000);
+    }
+    return;
+  }
+  SetState(State::IDLE);
+
+  while (true) {
+    SetBatteryInfo();
+    FlushRadioBuffer();
+    UpdateIMUMeasurements();
+    CheckFlightState();
+
+    const State &currentState = GetFlightState();
+    switch (currentState) {
+    case State::ARMED:
+      UpdateViewIdle();
+      SetPIDActuation();
+      break;
+    case State::IDLE:
+      UpdateViewIdle();
+      UpdatePropellerActuationEqual(0);
+      break;
+    case State::LOWBATTERY:
+      UpdateViewBatteryLow();
+      UpdatePropellerActuationEqual(0);
+      break;
+    case State::CHARGING:
+      UpdateViewCharging();
+      UpdatePropellerActuationEqual(0);
+      break;
+    default:
+      UpdatePropellerActuationEqual(0);
+      return; // If going to CALIBRATING or ERROR state
+    }
+
+    uBit.sleep(100);
   }
 }

@@ -1,6 +1,16 @@
-#include "flight-controller/flightController.h"
-#include "hand-controller/handController.h"
 #include <MicroBit.h>
+
+#ifndef AIRBIT_CONTROLLER
+#error "AIRBIT_CONTROLLER must be defined in codal.json"
+#endif
+
+#if AIRBIT_CONTROLLER == 0
+#include "flight-controller/flightController.h"
+#elif AIRBIT_CONTROLLER == 1
+#include "hand-controller/handController.h"
+#else
+#error "Invalid AIRBIT_CONTROLLER: expected 0 (flight) or 1 (hand)"
+#endif
 
 MicroBit uBit;
 const uint8_t RADIO_GROUP = 7;
@@ -13,67 +23,13 @@ static void initRadio() {
   uBit.display.clear();
 }
 
-static void FlightController() {
-  InitFlightController();
-  if (GetFlightState() == State::ERROR) {
-    while (true) {
-      uBit.display.scroll(GetErrorMessage());
-      uBit.sleep(1000);
-    }
-    return;
-  }
-  SetState(State::IDLE);
-
-  while (true) {
-    SetBatteryInfo();
-    FlushRadioBuffer();
-    UpdateIMUMeasurements();
-    CheckFlightState();
-
-    const State &currentState = GetFlightState();
-    switch (currentState) {
-    case State::ARMED:
-      UpdateViewIdle();
-      SetPIDActuation();
-      break;
-    case State::IDLE:
-      UpdateViewIdle();
-      UpdatePropellerActuationEqual(0);
-      break;
-    case State::LOWBATTERY:
-      UpdateViewBatteryLow();
-      UpdatePropellerActuationEqual(0);
-      break;
-    case State::CHARGING:
-      UpdateViewCharging();
-      UpdatePropellerActuationEqual(0);
-      break;
-    default:
-      UpdatePropellerActuationEqual(0);
-      return; // If going to CALIBRATING or ERROR state
-    }
-
-    uBit.sleep(100);
-  }
-}
-
-static void HandController() {
-  InitHandController();
-
-  while (true) {
-    SetOrientation();
-    UpdateDisplay();
-    CheckPanic();
-    TransmittData();
-    ReadPins();
-
-    uBit.sleep(100);
-  }
-}
-
 int main() {
   uBit.init();
   initRadio();
+#if AIRBIT_CONTROLLER == 0
   FlightController();
+#elif AIRBIT_CONTROLLER == 1
+  HandController();
+#endif
   return 0;
 }

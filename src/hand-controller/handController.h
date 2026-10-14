@@ -18,4 +18,6 @@ extern MicroBit &uBit;
 
 void InitHandController();
 
+void HandController();
+
 #endif
