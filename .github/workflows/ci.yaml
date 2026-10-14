@@ -29,11 +29,19 @@ jobs:
           filters: |
             src:
               - 'src/**'
+              - 'microbuild/**'
+              - 'configure_controller.py'
+              - 'microinstall.sh'
+              - '.github/workflows/**'
 
   micro-build:
     needs: check-src-changes
     if: needs.check-src-changes.outputs.src_changed == 'true'
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        controller: [flight, hand]
 
     steps:
       - name: Checkout code
@@ -44,14 +52,15 @@ jobs:
         run: |
           chmod +x microinstall.sh
           ./microinstall.sh
-      - name: Add micro-tools to path
-        run: |
-          source ./aliases.sh
-          chmod +x ./aliases.sh
-          ./aliases.sh
       - name: Copy src folder to sdk
         run: |
           rsync -a --delete ./src/ ./microbit-v2-sdk/source/
+      - name: Configure ${{ matrix.controller }} controller
+        run: |
+          python3 configure_controller.py \
+            --controller "${{ matrix.controller }}" \
+            --input microbuild/codal.json \
+            --output microbit-v2-sdk/codal.json
       - name: microbuild python
         run: |
           cd microbit-v2-sdk
