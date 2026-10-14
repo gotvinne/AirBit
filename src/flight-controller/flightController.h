@@ -66,8 +66,10 @@ void InitFlightController();
 
 void UpdatePropellerActuationEqual(uint8_t actuation);
 
-void MotorMixing(int throttle, int yaw, int pitch, int roll);
+void MotorMixing(uint8_t throttle, int8_t yaw, int8_t pitch, int8_t roll);
 
 void CheckFlightState();
+
+void FlightController();
 
 #endif

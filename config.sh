@@ -5,7 +5,6 @@
 # Location of the micro:bit v2 SDK (as cloned from microbit-v2-samples).
 export MICROBIT_SDK_DIRECTORY="/Users/geirolatvinnereim/AirBit/microbit-v2-sdk"
 
-
 ########################
 ## microbuild Options ##
 ########################
@@ -16,6 +15,8 @@ BUILD_DIRECTORY="./src"
 # Default output directory.
 BUILD_OUTPUT_DIRECTORY="."
 
+# Set Controller type
+CONTROLLER="hand"
 
 #######################
 ## microinit Options ##
