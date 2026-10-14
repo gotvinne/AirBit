@@ -75,15 +75,6 @@ fi
 # Get absolute path of build directory, microbit SDK directory.
 MICROBIT_SDK_DIRECTORY=$(realpath "$MICROBIT_SDK_DIRECTORY")
 BUILD_DIRECTORY=$(realpath "$BUILD_DIRECTORY")
-# codals: 
-BASE_CODAL_JSON="$SCRIPT_DIR/microbuild/codal.json"
-SDK_CODAL_JSON="$MICROBIT_SDK_DIRECTORY/codal.json"
-
-# Update codal.json with build configurations
-python3 "$SCRIPT_DIR/configure_controller.py" \
-    --controller "$CONTROLLER" \
-    --input "$BASE_CODAL_JSON" \
-    --output "$SDK_CODAL_JSON"
 
 # Ensure that the micro:bit SDK directory provided is *actually* an SDK directory.
 if [[ ! -f "$MICROBIT_SDK_DIRECTORY/build.py" ]]; then
@@ -91,39 +82,35 @@ if [[ ! -f "$MICROBIT_SDK_DIRECTORY/build.py" ]]; then
   exit -1
 fi
 
-# Ensure the microbit SDK source folder/source folder symlink does not exist.
-SDK_SOURCE_FOLDER="$MICROBIT_SDK_DIRECTORY/source"
-if [[ -L "$SDK_SOURCE_FOLDER" && -d "$SDK_SOURCE_FOLDER" ]]
-then
-    echo "Cleaning up existing source folder symlink at $SDK_SOURCE_FOLDER..."
-    rm "$SDK_SOURCE_FOLDER"
-elif [[ -d "$SDK_SOURCE_FOLDER" ]]
-then
-    echo "Cleaning up existing source folder at $SDK_SOURCE_FOLDER..." 
-    rm -r "$SDK_SOURCE_FOLDER"
+# Select the base configuration.
+BASE_CODAL_JSON="$SCRIPT_DIR/microbuild/codal.json"
+SDK_CODAL_JSON="$MICROBIT_SDK_DIRECTORY/codal.json"
+
+if [[ -f "$BUILD_DIRECTORY/codal.json" ]]; then
+    BASE_CODAL_JSON="$BUILD_DIRECTORY/codal.json"
 fi
 
-# Ensure the microbit SDK codal.json doesn't exist.
-if [[ -f "$SDK_CODAL_JSON" ]]
-then
-    echo "Cleaning up existing 'codal.json' at $SDK_CODAL_JSON..."
-    rm "$SDK_CODAL_JSON"
-fi
+# Write the configuration for the selected controller.
+CONTROLLER_CHANGED=$(python3 "$SCRIPT_DIR/configure_controller.py" \
+    --controller "$CONTROLLER" \
+    --codalpath "$BASE_CODAL_JSON")
 
-# Create a symlink from the source folder to the build folder.
-echo -e "${CYAN}Symlinking build directory to SDK source directory...${NC}"
-ln -s "$BUILD_DIRECTORY" "$SDK_SOURCE_FOLDER"
-
-# Create a symlink from the build 'codal.json' to the SDK directory.
-# Does a codal.json exist from the build directory? If so, use that. Otherwise, use the default.
-DEFAULT_CODAL_JSON="$SCRIPT_DIR/microbuild/codal.json"
-if [[ -f "$BUILD_DIRECTORY/codal.json" ]] 
-then
-	echo -e "${CYAN}Symlinking build directory 'codal.json' into SDK source directory...${NC}"
-	ln -s "$BUILD_DIRECTORY/codal.json" "$SDK_CODAL_JSON"
+# Keep an existing correct symlink.
+if [[ -L "$SDK_CODAL_JSON" ]] &&
+   [[ "$(readlink "$SDK_CODAL_JSON")" == "$BASE_CODAL_JSON" ]]; then
+    echo "Reusing existing codal.json symlink."
 else
-	echo -e "${CYAN}Symlinking default 'codal.json' into SDK source directory...${NC}"
-	ln -s "$DEFAULT_CODAL_JSON" "$SDK_CODAL_JSON"
+    # Remove an old link or regular SDK configuration.
+    if [[ -L "$SDK_CODAL_JSON" || -f "$SDK_CODAL_JSON" ]]; then
+        rm "$SDK_CODAL_JSON"
+    fi
+
+    ln -s "$BASE_CODAL_JSON" "$SDK_CODAL_JSON"
+fi
+
+if [[ "$CONTROLLER_CHANGED" == "true" ]]; then
+    echo -e "${CYAN}Controller changed. Cleaning build directory...${NC}"
+    rm -rf -- "$MICROBIT_SDK_DIRECTORY/build"
 fi
 
 # Clear existing library symlinks.

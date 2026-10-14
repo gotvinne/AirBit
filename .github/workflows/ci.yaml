@@ -59,8 +59,7 @@ jobs:
         run: |
           python3 configure_controller.py \
             --controller "${{ matrix.controller }}" \
-            --input microbuild/codal.json \
-            --output microbit-v2-sdk/codal.json
+            --codalpath microbit-v2-sdk/codal.json
       - name: microbuild python
         run: |
           cd microbit-v2-sdk
