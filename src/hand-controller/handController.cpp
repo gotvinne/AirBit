@@ -1,13 +1,9 @@
 #include "handController.h"
 
-void InitHandController() {
+void HandController() {
   SetBtnsHandlers();
   SetP1High();
   CalibrateHandAccelerometer();
-}
-
-void HandController() {
-  InitHandController();
 
   while (true) {
     SetOrientation();
