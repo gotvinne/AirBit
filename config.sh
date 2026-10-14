@@ -16,7 +16,7 @@ BUILD_DIRECTORY="./src"
 BUILD_OUTPUT_DIRECTORY="."
 
 # Set Controller type
-CONTROLLER="hand"
+CONTROLLER="flight" # Options: "flight" or "hand"
 
 #######################
 ## microinit Options ##
