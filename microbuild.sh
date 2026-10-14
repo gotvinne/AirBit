@@ -38,12 +38,10 @@ if [[ -x "$(command -v gcp)" ]]; then
 fi
 
 # Parse arguments passed in directly.
-for ARGUMENT in "$@"
-do
-    KEY=$(echo $ARGUMENT | cut -f1 -d=)
-    KEY_LENGTH=${#KEY}
-    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
-    export "$KEY"="$VALUE"
+for argument in "$@"; do
+    key="${argument%%=*}"
+    value="${argument#*=}"
+    export "$key=$value"
 done
 
 # If "MICROBIT_SDK_DIRECTORY" does not exist, error out.
@@ -55,6 +53,12 @@ fi
 # If "BUILD_DIRECTORY" does not exist, error out.
 if [[ ! -n "$BUILD_DIRECTORY" ]]; then
   echo -e "${RED}The directory to build was not specified. Either specify this in \`config.sh\`, or via the BUILD_DIRECTORY=... parameter.${NC}"
+  exit -1
+fi
+
+# If "CONTROLLER" does not exist, error out.
+if [[ ! -n "$CONTROLLER" ]]; then
+  echo -e "${RED}The controller was not specified. Use CONTROLLER=flight or CONTROLLER=hand.${NC}"
   exit -1
 fi
 
@@ -71,6 +75,15 @@ fi
 # Get absolute path of build directory, microbit SDK directory.
 MICROBIT_SDK_DIRECTORY=$(realpath "$MICROBIT_SDK_DIRECTORY")
 BUILD_DIRECTORY=$(realpath "$BUILD_DIRECTORY")
+# codals: 
+BASE_CODAL_JSON="$SCRIPT_DIR/microbuild/codal.json"
+SDK_CODAL_JSON="$MICROBIT_SDK_DIRECTORY/codal.json"
+
+# Update codal.json with build configurations
+python3 "$SCRIPT_DIR/configure_controller.py" \
+    --controller "$CONTROLLER" \
+    --input "$BASE_CODAL_JSON" \
+    --output "$SDK_CODAL_JSON"
 
 # Ensure that the micro:bit SDK directory provided is *actually* an SDK directory.
 if [[ ! -f "$MICROBIT_SDK_DIRECTORY/build.py" ]]; then
@@ -91,7 +104,6 @@ then
 fi
 
 # Ensure the microbit SDK codal.json doesn't exist.
-SDK_CODAL_JSON="$MICROBIT_SDK_DIRECTORY/codal.json"
 if [[ -f "$SDK_CODAL_JSON" ]]
 then
     echo "Cleaning up existing 'codal.json' at $SDK_CODAL_JSON..."
